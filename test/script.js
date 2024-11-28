@@ -1,30 +1,26 @@
 document.addEventListener('DOMContentLoaded', function () {
-    // Get buttons and elements
+    // Get buttons and dashboard elements
     const btnDashboard1 = document.getElementById('btn-dashboard-1');
     const btnDashboard2 = document.getElementById('btn-dashboard-2');
-    const iframe = document.getElementById('dashboard-frame');
-    const chartContainer = document.getElementById('chart-container');
+    const dashboard1 = document.getElementById('dashboard-1');
+    const dashboard2 = document.getElementById('dashboard-2');
 
-    // URLs for the dashboards
-    const netflixDashboardURL = "https://app.powerbi.com/view?r=eyJrIjoiOTg0YTg3YTUtMzViNC00YmFiLWFmMzgtOGM4N2MyMjIyZjU0IiwidCI6IjcwZGUxOTkyLTA3YzYtNDgwZi1hMzE4LWExYWZjYmEwMzk4MyIsImMiOjN9";
-    const disneyDashboardURL = "https://app.powerbi.com/view?r=eyJrIjoiMjE0MTIwYWEtNmMzMi00MGM1LThiZGUtZDhlYTg3OTUwYmYxIiwidCI6IjcwZGUxOTkyLTA3YzYtNDgwZi1hMzE4LWExYWZjYmEwMzk4MyIsImMiOjN9";
-
-    // Add event listeners to the buttons
+    // Add event listeners to toggle dashboards
     btnDashboard1.addEventListener('click', function () {
-        iframe.src = netflixDashboardURL; // Change iframe source to Netflix
-        chartContainer.classList.remove('hidden'); // Show chart for Dashboard 1
-        btnDashboard1.classList.add('active'); // Highlight button 1
-        btnDashboard2.classList.remove('active'); // Unhighlight button 2
+        dashboard1.classList.remove('hidden');
+        dashboard2.classList.add('hidden');
+        btnDashboard1.classList.add('active');
+        btnDashboard2.classList.remove('active');
     });
 
     btnDashboard2.addEventListener('click', function () {
-        iframe.src = disneyDashboardURL; // Change iframe source to Disney
-        chartContainer.classList.add('hidden'); // Hide chart for Dashboard 2
-        btnDashboard2.classList.add('active'); // Highlight button 2
-        btnDashboard1.classList.remove('active'); // Unhighlight button 1
+        dashboard2.classList.remove('hidden');
+        dashboard1.classList.add('hidden');
+        btnDashboard2.classList.add('active');
+        btnDashboard1.classList.remove('active');
     });
 
-    // D3.js Chart for Dashboard 1
+    // D3.js Visualization for Dashboard 1
     const margin = { top: 40, right: 20, bottom: 50, left: 50 };
     const width = 800 - margin.left - margin.right;
     const height = 500 - margin.top - margin.bottom;

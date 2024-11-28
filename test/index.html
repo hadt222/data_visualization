@@ -18,19 +18,31 @@
         </div>
 
         <div id="dashboard-container">
-            <!-- Default iframe for Dashboard 1 -->
-            <iframe id="dashboard-frame" 
+            <!-- Dashboard 1 Content -->
+            <div id="dashboard-1" class="dashboard">
+                <iframe 
                     title="netflix_dashboard" 
                     width="1024" 
                     height="612" 
                     src="https://app.powerbi.com/view?r=eyJrIjoiOTg0YTg3YTUtMzViNC00YmFiLWFmMzgtOGM4N2MyMjIyZjU0IiwidCI6IjcwZGUxOTkyLTA3YzYtNDgwZi1hMzE4LWExYWZjYmEwMzk4MyIsImMiOjN9" 
                     frameborder="0" 
                     allowFullScreen="true">
-            </iframe>
+                </iframe>
+                <div class="chart-container">
+                    <div class="chart"></div>
+                </div>
+            </div>
 
-            <!-- D3.js Visualization for Dashboard 1 -->
-            <div id="chart-container" class="hidden">
-                <div class="chart"></div>
+            <!-- Dashboard 2 Content -->
+            <div id="dashboard-2" class="dashboard hidden">
+                <iframe 
+                    title="disney_dashboard" 
+                    width="1024" 
+                    height="612" 
+                    src="https://app.powerbi.com/view?r=eyJrIjoiMjE0MTIwYWEtNmMzMi00MGM1LThiZGUtZDhlYTg3OTUwYmYxIiwidCI6IjcwZGUxOTkyLTA3YzYtNDgwZi1hMzE4LWExYWZjYmEwMzk4MyIsImMiOjN9" 
+                    frameborder="0" 
+                    allowFullScreen="true">
+                </iframe>
             </div>
         </div>
 
