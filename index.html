@@ -3,14 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CSV Data Visualization</title>
+    <title>Netflix Dashboard</title>
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <div class="container">
-        <h1>CSV Data Visualization</h1>
-        <canvas id="myChart"></canvas>
+        <h1>Netflix Dashboard</h1>
+        <div class="metrics">
+            <div id="total-shows"></div>
+            <div id="total-movies"></div>
+            <div id="total-series"></div>
+        </div>
+        <canvas id="typeChart"></canvas>
+        <canvas id="yearlyChart"></canvas>
+        <canvas id="ratingChart"></canvas>
+        <canvas id="durationChart"></canvas>
     </div>
     <script src="script.js"></script>
 </body>
