@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSCE 5320 Data Visualization Project</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>CSCE 5320 Data Visualization Project</h1>
+        <h2>Group 10: Thai-Ha Dang & Kamalini Ponnuru</h2>
+        
+        <div class="buttons">
+            <button id="btn-dashboard-1" class="active">Dashboard 1: Netflix Movies and TV Shows</button>
+            <button id="btn-dashboard-2">Dashboard 2: Disney+ Movies and TV Shows</button>
+        </div>
+
+        <div id="dashboard-container">
+            <!-- Default iframe for Dashboard 1 -->
+            <iframe id="dashboard-frame" 
+                    title="netflix_dashboard" 
+                    width="1024" 
+                    height="612" 
+                    src="https://app.powerbi.com/view?r=eyJrIjoiOTg0YTg3YTUtMzViNC00YmFiLWFmMzgtOGM4N2MyMjIyZjU0IiwidCI6IjcwZGUxOTkyLTA3YzYtNDgwZi1hMzE4LWExYWZjYmEwMzk4MyIsImMiOjN9" 
+                    frameborder="0" 
+                    allowFullScreen="true">
+            </iframe>
+
+            <!-- D3.js Visualization for Dashboard 1 -->
+            <div id="chart-container" class="hidden">
+                <div class="chart"></div>
+            </div>
+        </div>
+
+        <div class="data-info">
+            <p>
+                <strong>Dashboard 1:</strong> 
+                <a href="https://www.kaggle.com/datasets/shivamb/netflix-shows" target="_blank">
+                    Netflix Movies and TV Shows Dataset
+                </a>
+            </p>
+            <p>
+                <strong>Dashboard 2:</strong> 
+                <a href="https://www.kaggle.com/datasets/shivamb/disney-movies-and-tv-shows" target="_blank">
+                    Disney+ Movies and TV Shows Dataset
+                </a>
+            </p>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
