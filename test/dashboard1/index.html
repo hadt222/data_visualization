@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comprehensive Netflix Data Visualizations</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        /* Styles from all three files */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f1;
+            margin: 0;
+        }
+        .chart {
+            margin: 20px;
+        }
+        .chart-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .bar {
+            fill: #b20710;
+        }
+        .bar-label {
+            font-size: 12px;
+            fill: black;
+            text-anchor: middle;
+        }
+        .movie-bar {
+            fill: #b20710;
+        }
+        .tvshow-bar {
+            fill: #221f1f;
+        }
+        .hovered {
+            opacity: 0.7;
+            stroke: #000;
+            stroke-width: 1px;
+        }
+        .grid line {
+            stroke: lightgray;
+            stroke-opacity: 0.7;
+        }
+        .axis text {
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Section 1: Top 10 Countries on Netflix -->
+    <div class="chart-title">Top 10 Countries on Netflix</div>
+    <div class="chart" id="chart1"></div>
+
+    <!-- Section 2: Movie & TV Show Split -->
+    <div class="chart-title">Top 10 Countries: Movie & TV Show Split</div>
+    <svg id="chart2" width="800" height="600"></svg>
+
+    <!-- Section 3: Netflix Movies & TV Shows Over Time -->
+    <div class="chart-title">Netflix Movies & TV Shows Over Time</div>
+    <svg id="chart3" width="800" height="500"></svg>
+
+    <script>
+        // Section 1: Top 10 Countries on Netflix
+        (function() {
+            const margin = { top: 40, right: 20, bottom: 50, left: 50 };
+            const width = 800 - margin.left - margin.right;
+            const height = 500 - margin.top - margin.bottom;
+
+            const svg = d3.select("#chart1")
+                .append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+                .append("g")
+                .attr("transform", `translate(${margin.left},${margin.top})`);
+
+            d3.csv("netflix_titles.csv").then(data => {
+                const processedData = d3.rollup(
+                    data,
+                    v => v.length,
+                    d => d.country?.split(",")[0] || "Other Countries"
+                );
+                const sortedData = Array.from(processedData, ([country, count]) => ({ country, count }))
+                    .sort((a, b) => b.count - a.count)
+                    .slice(0, 10);
+
+                const x = d3.scaleBand()
+                    .domain(sortedData.map(d => d.country))
+                    .range([0, width])
+                    .padding(0.2);
+                const y = d3.scaleLinear()
+                    .domain([0, d3.max(sortedData, d => d.count) + 500])
+                    .range([height, 0]);
+
+                svg.append("g")
+                    .attr("transform", `translate(0,${height})`)
+                    .call(d3.axisBottom(x));
+
+                svg.append("g")
+                    .call(d3.axisLeft(y));
+
+                svg.selectAll(".bar")
+                    .data(sortedData)
+                    .enter()
+                    .append("rect")
+                    .attr("class", "bar")
+                    .attr("x", d => x(d.country))
+                    .attr("y", d => y(d.count))
+                    .attr("width", x.bandwidth())
+                    .attr("height", d => height - y(d.count));
+
+                svg.selectAll(".label")
+                    .data(sortedData)
+                    .enter()
+                    .append("text")
+                    .attr("class", "bar-label")
+                    .attr("x", d => x(d.country) + x.bandwidth() / 2)
+                    .attr("y", d => y(d.count) - 10)
+                    .text(d => d.count);
+            });
+        })();
+
+        // Section 2: Movie & TV Show Split
+        (function() {
+            const svg = d3.select("#chart2");
+            const margin = { top: 50, right: 50, bottom: 50, left: 150 };
+            const chartWidth = 800 - margin.left - margin.right;
+            const chartHeight = 600 - margin.top - margin.bottom;
+
+            const chart = svg.append("g")
+                .attr("transform", `translate(${margin.left}, ${margin.top})`);
+
+            d3.csv("netflix_titles.csv").then(data => {
+                const countryData = d3.rollup(data, v => {
+                    return {
+                        movie: v.filter(d => d.type === "Movie").length,
+                        tvshow: v.filter(d => d.type === "TV Show").length
+                    };
+                }, d => d.country?.split(",")[0]);
+
+                const processedData = Array.from(countryData)
+                    .sort((a, b) => b[1].movie + b[1].tvshow - (a[1].movie + a[1].tvshow))
+                    .slice(0, 10)
+                    .map(([country, counts]) => ({
+                        country,
+                        movie: counts.movie / (counts.movie + counts.tvshow),
+                        tvshow: counts.tvshow / (counts.movie + counts.tvshow)
+                    }));
+
+                const xScale = d3.scaleLinear().domain([0, 1]).range([0, chartWidth]);
+                const yScale = d3.scaleBand()
+                    .domain(processedData.map(d => d.country))
+                    .range([0, chartHeight])
+                    .padding(0.2);
+
+                chart.selectAll(".movie-bar")
+                    .data(processedData)
+                    .enter()
+                    .append("rect")
+                    .attr("class", "movie-bar")
+                    .attr("y", d => yScale(d.country))
+                    .attr("height", yScale.bandwidth())
+                    .attr("x", 0)
+                    .attr("width", d => xScale(d.movie));
+
+                chart.selectAll(".tvshow-bar")
+                    .data(processedData)
+                    .enter()
+                    .append("rect")
+                    .attr("class", "tvshow-bar")
+                    .attr("y", d => yScale(d.country))
+                    .attr("height", yScale.bandwidth())
+                    .attr("x", d => xScale(d.movie))
+                    .attr("width", d => xScale(d.tvshow));
+            });
+        })();
+
+        // Section 3: Netflix Movies & TV Shows Over Time
+                // Section 3: Netflix Movies & TV Shows Over Time
+                (function() {
+            const svg = d3.select("#chart3");
+            const margin = { top: 40, right: 40, bottom: 50, left: 50 };
+            const chartWidth = 800 - margin.left - margin.right;
+            const chartHeight = 500 - margin.top - margin.bottom;
+
+            const chartGroup = svg.append("g")
+                .attr("transform", `translate(${margin.left},${margin.top})`);
+
+            d3.csv("netflix_titles.csv").then(data => {
+                // Data cleaning and filtering for years
+                const filteredData = data.filter(d => d.release_year >= 2008 && d.release_year <= 2020);
+
+                // Group data by type and release year
+                const groupedData = d3.rollups(
+                    filteredData,
+                    v => v.length,
+                    d => d.type,
+                    d => +d.release_year // Convert release_year to number
+                );
+
+                // Handle cases where data may be missing
+                const movieData = groupedData.find(d => d[0] === "Movie")?.[1] || [];
+                const tvShowData = groupedData.find(d => d[0] === "TV Show")?.[1] || [];
+
+                // Create a consistent map of years to counts
+                const movieCounts = new Map(movieData);
+                const tvShowCounts = new Map(tvShowData);
+
+                const years = d3.range(2008, 2021); // Ensure range consistency
+                const movieValues = years.map(year => ({ year, value: movieCounts.get(year) || 0 }));
+                const tvShowValues = years.map(year => ({ year, value: tvShowCounts.get(year) || 0 }));
+
+                // Create scales
+                const xScale = d3.scaleLinear()
+                    .domain([2008, 2020])
+                    .range([0, chartWidth]);
+
+                const yScale = d3.scaleLinear()
+                    .domain([0, d3.max([...movieValues, ...tvShowValues], d => d.value)])
+                    .nice()
+                    .range([chartHeight, 0]);
+
+                const color = d3.scaleOrdinal()
+                    .domain(["Movie", "TV Show"])
+                    .range(["#b20710", "#221f1f"]);
+
+                // Create area generator
+                const area = d3.area()
+                    .x(d => xScale(d.year))
+                    .y0(chartHeight)
+                    .y1(d => yScale(d.value));
+
+                // Add areas for movies
+                chartGroup.append("path")
+                    .datum(movieValues)
+                    .attr("fill", color("Movie"))
+                    .attr("opacity", 0.8)
+                    .attr("d", area);
+
+                // Add areas for TV shows
+                chartGroup.append("path")
+                    .datum(tvShowValues)
+                    .attr("fill", color("TV Show"))
+                    .attr("opacity", 0.8)
+                    .attr("d", area);
+
+                // Add axes
+                chartGroup.append("g")
+                    .call(d3.axisBottom(xScale).ticks(13).tickFormat(d3.format("d")))
+                    .attr("transform", `translate(0,${chartHeight})`)
+                    .attr("class", "axis");
+
+                chartGroup.append("g")
+                    .call(d3.axisLeft(yScale))
+                    .attr("class", "axis");
+
+                // Add grid lines
+                chartGroup.append("g")
+                    .attr("class", "grid")
+                    .call(d3.axisLeft(yScale).tickSize(-chartWidth).tickFormat(''));
+
+                chartGroup.append("g")
+                    .attr("class", "grid")
+                    .attr("transform", `translate(0,${chartHeight})`)
+                    .call(d3.axisBottom(xScale).tickSize(-chartHeight).tickFormat(''));
+
+                // Add legend
+                const legend = svg.append("g")
+                    .attr("transform", `translate(${chartWidth + margin.left - 100},${margin.top})`);
+
+                legend.selectAll("rect")
+                    .data(["Movie", "TV Show"])
+                    .enter()
+                    .append("rect")
+                    .attr("x", 0)
+                    .attr("y", (d, i) => i * 20)
+                    .attr("width", 10)
+                    .attr("height", 10)
+                    .attr("fill", d => color(d));
+
+                legend.selectAll("text")
+                    .data(["Movie", "TV Show"])
+                    .enter()
+                    .append("text")
+                    .attr("x", 15)
+                    .attr("y", (d, i) => i * 20 + 9)
+                    .text(d => d)
+                    .attr("font-size", "12px");
+            }).catch(error => console.error("Error loading the CSV file:", error));
+        })();
+
+    </script>
+</body>
+</html>

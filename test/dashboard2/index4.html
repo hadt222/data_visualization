@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Disney+ Content by Year and Type</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        .line {
+            fill: none;
+            stroke-width: 2px;
+        }
+        .total {
+            stroke: steelblue;
+        }
+        .movie {
+            stroke: orange;
+            stroke-dasharray: 5, 5;
+        }
+        .tvshow {
+            stroke: green;
+            stroke-dasharray: 2, 2;
+        }
+        .axis text {
+            font-size: 12px;
+        }
+        .axis path,
+        .axis line {
+            fill: none;
+            stroke: black;
+            shape-rendering: crispEdges;
+        }
+    </style>
+</head>
+<body>
+    <h1>Content Added to Disney+ by Year and Type</h1>
+    <svg id="chart" width="800" height="500"></svg>
+    <script>
+        // Dimensions and margins
+        const margin = { top: 20, right: 30, bottom: 50, left: 50 };
+        const width = 800 - margin.left - margin.right;
+        const height = 500 - margin.top - margin.bottom;
+
+        // Create an SVG canvas
+        const svg = d3.select("#chart")
+            .append("g")
+            .attr("transform", `translate(${margin.left},${margin.top})`);
+
+        // Load and process data
+        d3.csv("disney_plus_titles.csv").then(data => {
+            // Handle missing values and process data
+            data.forEach(d => {
+                d.year_added = d.date_added ? +d.date_added.split(',').pop().trim() : 2020;
+                d.month_added = d.date_added ? d.date_added.split(' ')[0].trim() : 'Unknown';
+                d.Type = d.type;
+            });
+
+            const yearCounts = d3.rollups(data, v => v.length, d => d.year_added);
+            const typeCounts = d3.rollups(
+                data,
+                v => ({
+                    Movie: v.filter(d => d.Type === "Movie").length,
+                    TVShow: v.filter(d => d.Type === "TV Show").length
+                }),
+                d => d.year_added
+            );
+
+            // Prepare data for plotting
+            const years = Array.from(new Set(yearCounts.map(d => d[0]))).sort();
+            const totalCounts = yearCounts.sort((a, b) => a[0] - b[0]).map(d => d[1]);
+            const movieCounts = typeCounts.sort((a, b) => a[0] - b[0]).map(d => d[1].Movie || 0);
+            const tvCounts = typeCounts.sort((a, b) => a[0] - b[0]).map(d => d[1].TVShow || 0);
+
+            // Create scales
+            const x = d3.scaleLinear().domain(d3.extent(years)).range([0, width]);
+            const y = d3.scaleLinear().domain([0, d3.max(totalCounts)]).range([height, 0]);
+
+            // Add axes
+            svg.append("g")
+                .attr("class", "x-axis")
+                .attr("transform", `translate(0,${height})`)
+                .call(d3.axisBottom(x).ticks(years.length).tickFormat(d3.format("d")));
+
+            svg.append("g")
+                .attr("class", "y-axis")
+                .call(d3.axisLeft(y));
+
+            // Line generator
+            const line = d3.line()
+                .x((d, i) => x(years[i]))
+                .y(d => y(d));
+
+            // Plot lines
+            svg.append("path")
+                .datum(totalCounts)
+                .attr("class", "line total")
+                .attr("d", line)
+                .style("stroke", "steelblue");
+
+            svg.append("path")
+                .datum(movieCounts)
+                .attr("class", "line movie")
+                .attr("d", line)
+                .style("stroke", "orange");
+
+            svg.append("path")
+                .datum(tvCounts)
+                .attr("class", "line tvshow")
+                .attr("d", line)
+                .style("stroke", "green");
+
+            // Add legend
+            const legend = svg.append("g")
+                .attr("transform", `translate(${width - 150}, 20)`);
+
+            legend.append("circle").attr("cx", 10).attr("cy", 0).attr("r", 5).style("fill", "steelblue");
+            legend.append("text").attr("x", 20).attr("y", 5).text("Total").style("font-size", "12px");
+
+            legend.append("circle").attr("cx", 10).attr("cy", 20).attr("r", 5).style("fill", "orange");
+            legend.append("text").attr("x", 20).attr("y", 25).text("Movie").style("font-size", "12px");
+
+            legend.append("circle").attr("cx", 10).attr("cy", 40).attr("r", 5).style("fill", "green");
+            legend.append("text").attr("x", 20).attr("y", 45).text("TV Show").style("font-size", "12px");
+        }).catch(error => {
+            console.error("Error loading the CSV file:", error);
+        });
+    </script>
+</body>
+</html>

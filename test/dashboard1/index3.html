@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Netflix Data Visualization</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        .chart-title {
+            font-family: Arial, sans-serif;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .axis text {
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+        }
+        .axis path,
+        .axis line {
+            fill: none;
+            shape-rendering: crispEdges;
+        }
+        .grid line {
+            stroke: lightgray;
+            stroke-opacity: 0.7;
+            shape-rendering: crispEdges;
+        }
+        .grid path {
+            display: none;
+        }
+        .tooltip {
+            position: absolute;
+            text-align: center;
+            width: auto;
+            height: auto;
+            padding: 5px;
+            font: 12px sans-serif;
+            background: white;
+            border: 1px solid #ccc;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="chart-title">Netflix Movies & TV Shows Over Time</div>
+    <svg id="chart" width="800" height="500"></svg>
+
+    <script>
+        // Load data
+        d3.csv("netflix_titles.csv").then(data => {
+            // Data cleaning and processing
+            const ratingsAges = {
+                "TV-PG": "Older Kids", "TV-MA": "Adults", "TV-Y7-FV": "Older Kids",
+                "TV-Y7": "Older Kids", "TV-14": "Teens", "R": "Adults",
+                "TV-Y": "Kids", "NR": "Adults", "PG-13": "Teens",
+                "TV-G": "Kids", "PG": "Older Kids", "G": "Kids",
+                "UR": "Adults", "NC-17": "Adults"
+            };
+
+            data.forEach(d => {
+                d.country = d.country || "Unknown";
+                d.cast = d.cast || "No Data";
+                d.director = d.director || "No Data";
+                d.first_country = d.country.split(",")[0];
+                d.target_ages = ratingsAges[d.rating] || "Unknown";
+                d.release_year = +d.release_year || 0;
+            });
+
+            // Simplify country names
+            const countryMap = {
+                "United States": "USA", "United Kingdom": "UK", "South Korea": "S. Korea"
+            };
+            data.forEach(d => {
+                d.first_country = countryMap[d.first_country] || d.first_country;
+            });
+
+            // Filter years for visualization (2008-2020)
+            const filteredData = data.filter(d => d.release_year >= 2008 && d.release_year <= 2020);
+
+            // Group by type and year
+            const groupedData = d3.rollups(filteredData, v => v.length, d => d.type, d => d.release_year);
+
+            const movieData = groupedData.find(d => d[0] === "Movie")[1] || [];
+            const tvShowData = groupedData.find(d => d[0] === "TV Show")[1] || [];
+
+            const movieCounts = new Map(movieData);
+            const tvShowCounts = new Map(tvShowData);
+
+            // Prepare data for the area chart
+            const years = d3.range(2008, 2021);
+            const movieValues = years.map(year => ({ year, value: movieCounts.get(year) || 0 }));
+            const tvShowValues = years.map(year => ({ year, value: tvShowCounts.get(year) || 0 }));
+
+            // Create SVG and scales
+            const svg = d3.select("#chart");
+            const width = +svg.attr("width");
+            const height = +svg.attr("height");
+
+            const margin = { top: 40, right: 40, bottom: 50, left: 50 };
+            const chartWidth = width - margin.left - margin.right;
+            const chartHeight = height - margin.top - margin.bottom;
+
+            const xScale = d3.scaleLinear()
+                .domain([2008, 2020])
+                .range([0, chartWidth]);
+
+            const yScale = d3.scaleLinear()
+                .domain([0, d3.max([...movieValues, ...tvShowValues], d => d.value)])
+                .nice()
+                .range([chartHeight, 0]);
+
+            const color = d3.scaleOrdinal()
+                .domain(["Movie", "TV Show"])
+                .range(["#b20710", "#221f1f"]);
+
+            // Append chart group
+            const chartGroup = svg.append("g")
+                .attr("transform", `translate(${margin.left},${margin.top})`);
+
+            // Grid lines
+            chartGroup.append("g")
+                .attr("class", "grid")
+                .call(d3.axisLeft(yScale).tickSize(-chartWidth).tickFormat(''));
+
+            chartGroup.append("g")
+                .attr("class", "grid")
+                .attr("transform", `translate(0,${chartHeight})`)
+                .call(d3.axisBottom(xScale).tickSize(-chartHeight).tickFormat(''));
+
+            // Area generator
+            const area = d3.area()
+                .x(d => xScale(d.year))
+                .y0(chartHeight)
+                .y1(d => yScale(d.value));
+
+            // Add areas
+            chartGroup.append("path")
+                .datum(movieValues)
+                .attr("fill", color("Movie"))
+                .attr("opacity", 0.8)
+                .attr("d", area);
+
+            chartGroup.append("path")
+                .datum(tvShowValues)
+                .attr("fill", color("TV Show"))
+                .attr("opacity", 0.8)
+                .attr("d", area);
+
+            // Axes
+            chartGroup.append("g")
+                .call(d3.axisBottom(xScale).ticks(13).tickFormat(d3.format("d")))
+                .attr("transform", `translate(0,${chartHeight})`)
+                .attr("class", "axis");
+
+            chartGroup.append("g")
+                .call(d3.axisLeft(yScale))
+                .attr("class", "axis");
+
+            // Add legend
+            const legend = svg.append("g")
+                .attr("transform", `translate(${width - 150},${margin.top})`);
+
+            legend.selectAll("rect")
+                .data(["Movie", "TV Show"])
+                .enter()
+                .append("rect")
+                .attr("x", 0)
+                .attr("y", (d, i) => i * 20)
+                .attr("width", 10)
+                .attr("height", 10)
+                .attr("fill", d => color(d));
+
+            legend.selectAll("text")
+                .data(["Movie", "TV Show"])
+                .enter()
+                .append("text")
+                .attr("x", 15)
+                .attr("y", (d, i) => i * 20 + 9)
+                .text(d => d)
+                .attr("font-size", "12px");
+        }).catch(error => console.error(error));
+    </script>
+</body>
+</html>

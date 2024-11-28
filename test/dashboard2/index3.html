@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Disney+ Visualizations</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f1;
+            margin: 0;
+            padding: 20px;
+        }
+        .chart-container {
+            margin-bottom: 50px;
+        }
+        .bar {
+            fill: #1f77b4;
+        }
+        .bar:hover {
+            fill: #ff7f0e;
+        }
+        .stacked-bar {
+            stroke-width: 0.5px;
+            stroke: #f5f5f1;
+        }
+        .label {
+            font-size: 12px;
+            fill: black;
+            text-anchor: middle;
+        }
+        .axis text {
+            font-size: 12px;
+        }
+        .title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="chart-container">
+        <div class="title">Top 10 Directors with the Most Movies</div>
+        <svg id="directorChart" width="800" height="400"></svg>
+    </div>
+    <div class="chart-container">
+        <div class="title">Distribution of Release Year</div>
+        <svg id="releaseYearChart" width="800" height="500"></svg>
+    </div>
+    <script>
+        const margin = { top: 40, right: 20, bottom: 50, left: 150 };
+        const width = 800 - margin.left - margin.right;
+        const height = 400 - margin.top - margin.bottom;
+
+        // Load Disney+ CSV data
+        d3.csv("disney_plus_titles.csv").then(data => {
+            // === Data Cleaning ===
+            data.forEach(d => {
+                d.date_added = d.date_added ? new Date(d.date_added) : null;
+                d.director = d.director || "Unknown";
+                d.cast = d.cast || "Unknown";
+                d.country = d.country || "Unknown";
+                d.rating = d.rating || "Unknown";
+                d.release_year = +d.release_year;
+                d.type = d.type || "Unknown";
+            });
+
+            // === Horizontal Bar Chart: Top 10 Directors ===
+            const movies = data.filter(d => d.type === "Movie");
+            const directorCounts = d3.rollup(
+                movies,
+                v => v.length,
+                d => d.director
+            );
+
+            const topDirectors = Array.from(directorCounts, ([director, count]) => ({ director, count }))
+                .sort((a, b) => b.count - a.count)
+                .slice(0, 10);
+
+            const directorChartSvg = d3.select("#directorChart")
+                .append("g")
+                .attr("transform", `translate(${margin.left},${margin.top})`);
+
+            const xScaleDirectors = d3.scaleLinear()
+                .domain([0, d3.max(topDirectors, d => d.count)])
+                .range([0, width]);
+
+            const yScaleDirectors = d3.scaleBand()
+                .domain(topDirectors.map(d => d.director))
+                .range([0, height])
+                .padding(0.2);
+
+            directorChartSvg.append("g")
+                .call(d3.axisLeft(yScaleDirectors));
+
+            directorChartSvg.append("g")
+                .attr("transform", `translate(0,${height})`)
+                .call(d3.axisBottom(xScaleDirectors));
+
+            directorChartSvg.selectAll(".bar")
+                .data(topDirectors)
+                .enter()
+                .append("rect")
+                .attr("class", "bar")
+                .attr("y", d => yScaleDirectors(d.director))
+                .attr("x", 0)
+                .attr("width", d => xScaleDirectors(d.count))
+                .attr("height", yScaleDirectors.bandwidth());
+
+            // === Stacked Histogram: Distribution of Release Year ===
+            const histogramMargin = { top: 40, right: 20, bottom: 50, left: 70 };
+            const histogramWidth = 800 - histogramMargin.left - histogramMargin.right;
+            const histogramHeight = 500 - histogramMargin.top - histogramMargin.bottom;
+
+            const types = ["Movie", "TV Show"];
+            const releaseYearData = types.map(type => {
+                const filteredData = data.filter(d => d.type === type);
+                const bins = d3.histogram()
+                    .value(d => d.release_year)
+                    .domain([d3.min(data, d => d.release_year), d3.max(data, d => d.release_year)])
+                    .thresholds(d3.range(1940, 2021, 10))(filteredData);
+
+                return { type, bins };
+            });
+
+            const releaseYearChartSvg = d3.select("#releaseYearChart")
+                .append("g")
+                .attr("transform", `translate(${histogramMargin.left},${histogramMargin.top})`);
+
+            const xScaleYears = d3.scaleLinear()
+                .domain([1940, 2020])
+                .range([0, histogramWidth]);
+
+            const yScaleYears = d3.scaleLinear()
+                .domain([0, d3.max(releaseYearData, group => d3.max(group.bins, bin => bin.length))])
+                .range([histogramHeight, 0]);
+
+            const colorScale = d3.scaleOrdinal()
+                .domain(types)
+                .range(["#1f77b4", "#ff7f0e"]);
+
+            releaseYearChartSvg.append("g")
+                .attr("transform", `translate(0,${histogramHeight})`)
+                .call(d3.axisBottom(xScaleYears).tickFormat(d => `${d}`));
+
+            releaseYearChartSvg.append("g")
+                .call(d3.axisLeft(yScaleYears));
+
+            releaseYearChartSvg.selectAll("g.stack")
+                .data(releaseYearData)
+                .enter()
+                .append("g")
+                .attr("class", "stack")
+                .attr("fill", d => colorScale(d.type))
+                .selectAll("rect")
+                .data(d => d.bins)
+                .enter()
+                .append("rect")
+                .attr("x", d => xScaleYears(d.x0))
+                .attr("y", d => yScaleYears(d.length))
+                .attr("width", d => xScaleYears(d.x1) - xScaleYears(d.x0))
+                .attr("height", d => histogramHeight - yScaleYears(d.length))
+                .attr("class", "stacked-bar");
+
+            // Add legend
+            releaseYearChartSvg.append("g")
+                .selectAll("text")
+                .data(types)
+                .enter()
+                .append("text")
+                .attr("x", histogramWidth - 100)
+                .attr("y", (d, i) => i * 20)
+                .text(d => d)
+                .style("fill", d => colorScale(d));
+        }).catch(error => {
+            console.error("Error loading the CSV file:", error);
+        });
+    </script>
+</body>
+</html>
