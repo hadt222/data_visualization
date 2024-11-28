@@ -3,22 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Netflix Dashboard</title>
+    <title>CSCE 5320 Data Visualization Project</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <div class="container">
-        <h1>Netflix Dashboard</h1>
-        <div class="metrics">
-            <div id="total-shows"></div>
-            <div id="total-movies"></div>
-            <div id="total-series"></div>
+        <h1>CSCE 5320 Data Visualization Project</h1>
+        <h2>Group 10: Thai-Ha Dang & Kamalini Ponnuru</h2>
+        
+        <div class="buttons">
+            <button id="btn-dashboard-1" class="active">Dashboard 1: Netflix Movies and TV Shows</button>
+            <button id="btn-dashboard-2">Dashboard 2: Disney+ Movies and TV Shows</button>
         </div>
-        <canvas id="typeChart"></canvas>
-        <canvas id="yearlyChart"></canvas>
-        <canvas id="ratingChart"></canvas>
-        <canvas id="durationChart"></canvas>
+
+        <div class="iframe-container">
+            <!-- Default iframe -->
+            <iframe id="dashboard-frame" 
+                    title="netflix_dashboard" 
+                    width="1024" 
+                    height="612" 
+                    src="https://app.powerbi.com/view?r=eyJrIjoiOTg0YTg3YTUtMzViNC00YmFiLWFmMzgtOGM4N2MyMjIyZjU0IiwidCI6IjcwZGUxOTkyLTA3YzYtNDgwZi1hMzE4LWExYWZjYmEwMzk4MyIsImMiOjN9" 
+                    frameborder="0" 
+                    allowFullScreen="true">
+            </iframe>
+        </div>
+
+        <div class="data-info">
+            <p>
+                <strong>Dashboard 1:</strong> 
+                <a href="https://www.kaggle.com/datasets/shivamb/netflix-shows" target="_blank">
+                    Netflix Movies and TV Shows Dataset
+                </a>
+            </p>
+            <p>
+                <strong>Dashboard 2:</strong> 
+                <a href="https://www.kaggle.com/datasets/shivamb/disney-movies-and-tv-shows" target="_blank">
+                    Disney+ Movies and TV Shows Dataset
+                </a>
+            </p>
+        </div>
     </div>
     <script src="script.js"></script>
 </body>
