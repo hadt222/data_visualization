@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comprehensive Netflix Data Visualizations</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+    <h3>CSCE 5320 Data Visualization Project</h3>
+    <h4>Group 10: Thai-Ha Dang & Kamalini Ponnuru</h3>
+    <div class="chart-container">
+        <div class="chart-title">Top 10 Countries on Netflix</div>
+        <div class="chart" id="chart1"></div>
+        <p class="chart-description">
+            This bar chart highlights the top 10 countries with the largest number of Netflix titles.
+            Each bar represents the total number of titles (movies and TV shows combined) available in a specific country.
+            Hover over a bar to see the title count.
+        </p>
+    </div>
+
+    <div class="chart-container">
+        <div class="chart-title">Top 10 Countries: Movie & TV Show Split</div>
+        <svg id="chart2" width="600" height="400"></svg>
+        <p class="chart-description">
+            This stacked bar chart shows the split between movies and TV shows for the top 10 countries on Netflix.
+            Each bar represents the proportion of movies (in orange) and TV shows (in purple) available in that country.
+            Percentages are displayed within each segment.
+        </p>
+    </div>
+
+    <div class="chart-container">
+        <div class="chart-title">Netflix Movies & TV Shows Over Time</div>
+        <svg id="chart3" width="800" height="500"></svg>
+        <p class="chart-description">
+            This area chart visualizes the number of Netflix movies and TV shows released each year from 2008 to 2020.
+            The orange area represents movies, while the purple area represents TV shows.
+            Hover over the chart to explore trends for specific years.
+        </p>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

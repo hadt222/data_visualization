@@ -1,0 +1,154 @@
+/* General Styling */
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #75c8da, #c4fcff);
+    color: #fff;
+    margin: 0;
+    text-align: center;
+}
+
+.chart-description {
+    font-size: 16px;
+    color: #f0f0f0;
+    margin: 10px 0 20px;
+    text-align: center;
+    line-height: 1.5;
+}
+
+
+.chart-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent black background */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Add shadow */
+    border-radius: 10px; /* Rounded corners */
+}
+
+.chart-title {
+    font-size: 28px;
+    font-weight: bold;
+    margin: 20px 0;
+    color: #f8f9fa;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* Section 1 Bar Colors */
+.bar {
+    transition: transform 0.5s ease, opacity 0.3s ease;
+}
+
+.bar:hover {
+    opacity: 0.8;
+    transform: scale(1.1);
+}
+
+/* Individual Bar Color Palette */
+.country-bar-1 { fill: #ff6361; } /* Light Red */
+.country-bar-2 { fill: #ffa600; } /* Yellow */
+.country-bar-3 { fill: #bc5090; } /* Pink */
+.country-bar-4 { fill: #003f5c; } /* Dark Blue */
+.country-bar-5 { fill: #58508d; } /* Purple */
+.country-bar-6 { fill: #ff6f61; } /* Coral */
+.country-bar-7 { fill: #6b4226; } /* Brown */
+.country-bar-8 { fill: #f3a683; } /* Peach */
+.country-bar-9 { fill: #f7c6c7; } /* Light Pink */
+.country-bar-10 { fill: #1f78b4; } /* Sky Blue */
+
+/* Axis Styling */
+.axis path,
+.axis line {
+    stroke: #fff;
+}
+
+.axis text {
+    font-size: 12px;
+    fill: #f8f9fa;
+}
+
+/* SVG Background */
+svg {
+    background-color: rgba(61, 193, 189, 0.1); /* Semi-transparent white background */
+    border-radius: 10px; /* Rounded corners */
+    padding: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Add shadow */
+}
+/* Chart Grid and Axes */
+.grid line {
+    stroke: rgba(255, 255, 255, 0.3); /* Reduced transparency */
+}
+
+.axis path,
+.axis line {
+    stroke: #fff;
+}
+
+.axis text {
+    font-size: 12px;
+    fill: #f8f9fa;
+}
+
+
+
+svg {
+    display: block;
+    margin: 0 auto;
+}
+
+.bar {
+    fill: #ff6361;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.bar:hover {
+    opacity: 0.8;
+    transform: scale(1.1);
+}
+
+.movie-bar {
+    fill: #ffa600;
+    transition: all 0.4s ease;
+}
+
+.movie-bar:hover {
+    fill: #ffd740;
+    transform: scale(1.05);
+}
+
+.tvshow-bar {
+    fill: #bc5090;
+    transition: all 0.4s ease;
+}
+
+.tvshow-bar:hover {
+    fill: #f3a6d2;
+    transform: scale(1.05);
+}
+
+.text-label {
+    fill: #fff;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.axis path,
+.axis line {
+    stroke: #fff;
+}
+
+.axis text {
+    font-size: 12px;
+    fill: #f8f9fa;
+}
+
+.legend {
+    font-size: 14px;
+    fill: #f8f9fa;
+}
+
+.legend rect {
+    rx: 3;
+    ry: 3;
+}

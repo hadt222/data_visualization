@@ -1,0 +1,100 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #aaeceb;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+section {
+    margin-bottom: 50px;
+    text-align: center;
+}
+
+.chart {
+    display: flex;
+    justify-content: center;
+    background-color: #8fded5;
+    align-items: center;
+    margin-top: 20px;
+}
+
+h2 {
+    margin-bottom: 10px;
+    font-size: 24px;
+    color: #333;
+}
+
+/* General Styling */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa;
+    color: #333;
+    line-height: 1.6;
+}
+
+h1 {
+    text-align: center;
+    color: #0056b3;
+    margin: 20px 0;
+}
+
+h2 {
+    color: #333;
+    text-align: center;
+    margin: 20px 0;
+    font-size: 1.5em;
+}
+
+/* Chart Section Styling */
+section {
+    margin: 20px auto;
+    padding: 20px;
+    max-width: 900px;
+    background: #9bdef3;
+    /* border: 1px solid #8cddfe; */
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.chart {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 400px;
+    /* background-color: #f0f0f0;
+    border: 1px dashed #bbb; */
+    border-radius: 6px;
+    margin: 20px 0;
+}
+
+svg {
+    display: block;
+    margin: 0 auto;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    h1, h2 {
+        font-size: 1.2em;
+    }
+
+    section {
+        padding: 15px;
+    }
+
+    .chart {
+        height: 300px;
+    }
+
+    svg {
+        width: 100%;
+        height: auto;
+    }
+}
