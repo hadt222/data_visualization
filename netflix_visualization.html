@@ -1,0 +1,4005 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Netflix Filme and Movie Data Visualization</title>
+  <style>
+    html {
+      line-height: 1.5;
+      font-family: Georgia, serif;
+      font-size: 20px;
+      color: #1a1a1a;
+      background-color: #c5e0ec;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 1em;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, 'Lucida Console', Consolas, monospace;
+      font-size: 85%;
+      margin: 0;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+  <h1>CSCE 5320 Data Visualization Project</h1>
+  <h2>Group 10: Thai-Ha Dang & Kamalini Ponnuru</h2>
+<div class="cell code" data-execution_count="6" id="NppbX54pcLhk">
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span></code></pre></div>
+</div>
+<div class="cell code" data-execution_count="7"
+data-colab="{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}"
+id="Rl1CtCLmc-o6" data-outputId="c52fec5d-7e16-4f9d-c444-987446d6c0c4">
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">&#39;netflix_titles.csv&#39;</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.head())</span></code></pre></div>
+<div class="output stream stdout">
+<pre><code>  show_id     type                  title         director  \
+0      s1    Movie   Dick Johnson Is Dead  Kirsten Johnson   
+1      s2  TV Show          Blood &amp; Water              NaN   
+2      s3  TV Show              Ganglands  Julien Leclercq   
+3      s4  TV Show  Jailbirds New Orleans              NaN   
+4      s5  TV Show           Kota Factory              NaN   
+
+                                                cast        country  \
+0                                                NaN  United States   
+1  Ama Qamata, Khosi Ngema, Gail Mabalane, Thaban...   South Africa   
+2  Sami Bouajila, Tracy Gotoas, Samuel Jouy, Nabi...            NaN   
+3                                                NaN            NaN   
+4  Mayur More, Jitendra Kumar, Ranjan Raj, Alam K...          India   
+
+           date_added  release_year rating   duration  \
+0  September 25, 2021          2020  PG-13     90 min   
+1  September 24, 2021          2021  TV-MA  2 Seasons   
+2  September 24, 2021          2021  TV-MA   1 Season   
+3  September 24, 2021          2021  TV-MA   1 Season   
+4  September 24, 2021          2021  TV-MA  2 Seasons   
+
+                                           listed_in  \
+0                                      Documentaries   
+1    International TV Shows, TV Dramas, TV Mysteries   
+2  Crime TV Shows, International TV Shows, TV Act...   
+3                             Docuseries, Reality TV   
+4  International TV Shows, Romantic TV Shows, TV ...   
+
+                                         description  
+0  As her father nears the end of his life, filmm...  
+1  After crossing paths at a party, a Cape Town t...  
+2  To protect his family from a powerful drug lor...  
+3  Feuds, flirtations and toilet talk go down amo...  
+4  In a city of coaching centers known to train I...  
+</code></pre>
+</div>
+</div>
+<div class="cell code" data-execution_count="8"
+data-colab="{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}"
+id="drKHHcj5dDiN" data-outputId="c6e8b6ac-2622-4a38-b925-3e3959220a86">
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>df.info()</span></code></pre></div>
+<div class="output stream stdout">
+<pre><code>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+RangeIndex: 8807 entries, 0 to 8806
+Data columns (total 12 columns):
+ #   Column        Non-Null Count  Dtype 
+---  ------        --------------  ----- 
+ 0   show_id       8807 non-null   object
+ 1   type          8807 non-null   object
+ 2   title         8807 non-null   object
+ 3   director      6173 non-null   object
+ 4   cast          7982 non-null   object
+ 5   country       7976 non-null   object
+ 6   date_added    8797 non-null   object
+ 7   release_year  8807 non-null   int64 
+ 8   rating        8803 non-null   object
+ 9   duration      8804 non-null   object
+ 10  listed_in     8807 non-null   object
+ 11  description   8807 non-null   object
+dtypes: int64(1), object(11)
+memory usage: 825.8+ KB
+</code></pre>
+</div>
+</div>
+<div class="cell code" data-execution_count="9"
+data-colab="{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:300}"
+id="UJjsJXRhely4" data-outputId="d8bf7ce6-c3cd-4060-f90e-21a045685d8d">
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>df.describe()</span></code></pre></div>
+<div class="output execute_result" data-execution_count="9">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>release_year</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>8807.000000</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>2014.180198</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>8.819312</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>1925.000000</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>2013.000000</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>2017.000000</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>2019.000000</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>2021.000000</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell markdown" id="tqZisQ71es2q">
+<p>Cleaning Data</p>
+</div>
+<div class="cell code" data-execution_count="10"
+data-colab="{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:89}"
+id="juGp03Wketh3" data-outputId="c957b4eb-e989-4ea1-d9b2-38ced150ed0a">
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>df.fillna(<span class="st">&#39;unknown&#39;</span>, inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>df<span class="op">=</span>df[df[<span class="st">&#39;date_added&#39;</span>]<span class="op">!=</span> <span class="st">&#39;unknown&#39;</span>]</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>null_mask <span class="op">=</span> df[[<span class="st">&#39;director&#39;</span>, <span class="st">&#39;cast&#39;</span>, <span class="st">&#39;country&#39;</span>, <span class="st">&#39;date_added&#39;</span>, <span class="st">&#39;rating&#39;</span>, <span class="st">&#39;duration&#39;</span>]].isnull().<span class="bu">any</span>(axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>null_rows <span class="op">=</span> df[null_mask]</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>display(null_rows)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;date_added&#39;</span>] <span class="op">=</span> pd.to_datetime(df[<span class="st">&#39;date_added&#39;</span>], errors<span class="op">=</span><span class="st">&#39;coerce&#39;</span>)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>df<span class="op">=</span>df.dropna()</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>df<span class="op">=</span>df.drop_duplicates()</span></code></pre></div>
+<div class="output display_data">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>show_id</th>
+      <th>type</th>
+      <th>title</th>
+      <th>director</th>
+      <th>cast</th>
+      <th>country</th>
+      <th>date_added</th>
+      <th>release_year</th>
+      <th>rating</th>
+      <th>duration</th>
+      <th>listed_in</th>
+      <th>description</th>
+    </tr>
+  </thead>
+  <tbody>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell markdown" id="vMO29NpOe-Q6">
+<p>EDA</p>
+</div>
+<div class="cell code" data-execution_count="11"
+data-colab="{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}"
+id="8ZECbQREe8Ec" data-outputId="078c3808-063e-48bc-bd61-e387d98c4251">
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df[<span class="st">&#39;rating&#39;</span>].unique())</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df[<span class="st">&#39;type&#39;</span>].unique())</span></code></pre></div>
+<div class="output stream stdout">
+<pre><code>[&#39;PG-13&#39; &#39;TV-MA&#39; &#39;PG&#39; &#39;TV-14&#39; &#39;TV-PG&#39; &#39;TV-Y&#39; &#39;TV-Y7&#39; &#39;R&#39; &#39;TV-G&#39; &#39;G&#39;
+ &#39;NC-17&#39; &#39;74 min&#39; &#39;84 min&#39; &#39;66 min&#39; &#39;NR&#39; &#39;unknown&#39; &#39;TV-Y7-FV&#39; &#39;UR&#39;]
+[&#39;Movie&#39; &#39;TV Show&#39;]
+</code></pre>
+</div>
+</div>
+<div class="cell code" data-execution_count="12" id="2GGqtEmNfEr3">
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df.drop(df[df[<span class="st">&#39;rating&#39;</span>].isin([<span class="st">&#39;74 min&#39;</span>, <span class="st">&#39;84 min&#39;</span>, <span class="st">&#39;66 min&#39;</span>])].index)</span></code></pre></div>
+</div>
+<div class="cell code" data-execution_count="13"
+data-colab="{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}"
+id="_9Y5GXs_fIOJ" data-outputId="c81a2705-4282-421c-ec1f-5329e4e98d10">
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df[<span class="st">&#39;duration&#39;</span>].unique()) <span class="co"># group by movies and TV shows</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co">#print(df[&#39;country&#39;].unique())</span></span></code></pre></div>
+<div class="output stream stdout">
+<pre><code>[&#39;90 min&#39; &#39;2 Seasons&#39; &#39;1 Season&#39; &#39;91 min&#39; &#39;125 min&#39; &#39;9 Seasons&#39; &#39;104 min&#39;
+ &#39;127 min&#39; &#39;4 Seasons&#39; &#39;67 min&#39; &#39;94 min&#39; &#39;5 Seasons&#39; &#39;161 min&#39; &#39;61 min&#39;
+ &#39;166 min&#39; &#39;147 min&#39; &#39;103 min&#39; &#39;97 min&#39; &#39;106 min&#39; &#39;111 min&#39; &#39;3 Seasons&#39;
+ &#39;110 min&#39; &#39;105 min&#39; &#39;96 min&#39; &#39;124 min&#39; &#39;116 min&#39; &#39;98 min&#39; &#39;23 min&#39;
+ &#39;115 min&#39; &#39;122 min&#39; &#39;99 min&#39; &#39;88 min&#39; &#39;100 min&#39; &#39;6 Seasons&#39; &#39;102 min&#39;
+ &#39;93 min&#39; &#39;95 min&#39; &#39;85 min&#39; &#39;83 min&#39; &#39;113 min&#39; &#39;13 min&#39; &#39;182 min&#39; &#39;48 min&#39;
+ &#39;145 min&#39; &#39;87 min&#39; &#39;92 min&#39; &#39;80 min&#39; &#39;117 min&#39; &#39;128 min&#39; &#39;119 min&#39;
+ &#39;143 min&#39; &#39;114 min&#39; &#39;118 min&#39; &#39;108 min&#39; &#39;63 min&#39; &#39;121 min&#39; &#39;142 min&#39;
+ &#39;154 min&#39; &#39;120 min&#39; &#39;82 min&#39; &#39;109 min&#39; &#39;101 min&#39; &#39;86 min&#39; &#39;229 min&#39;
+ &#39;76 min&#39; &#39;89 min&#39; &#39;156 min&#39; &#39;112 min&#39; &#39;107 min&#39; &#39;129 min&#39; &#39;135 min&#39;
+ &#39;136 min&#39; &#39;165 min&#39; &#39;150 min&#39; &#39;133 min&#39; &#39;70 min&#39; &#39;84 min&#39; &#39;140 min&#39;
+ &#39;78 min&#39; &#39;7 Seasons&#39; &#39;64 min&#39; &#39;59 min&#39; &#39;139 min&#39; &#39;69 min&#39; &#39;148 min&#39;
+ &#39;189 min&#39; &#39;141 min&#39; &#39;130 min&#39; &#39;138 min&#39; &#39;81 min&#39; &#39;132 min&#39; &#39;10 Seasons&#39;
+ &#39;123 min&#39; &#39;65 min&#39; &#39;68 min&#39; &#39;66 min&#39; &#39;62 min&#39; &#39;74 min&#39; &#39;131 min&#39; &#39;39 min&#39;
+ &#39;46 min&#39; &#39;38 min&#39; &#39;8 Seasons&#39; &#39;17 Seasons&#39; &#39;126 min&#39; &#39;155 min&#39; &#39;159 min&#39;
+ &#39;137 min&#39; &#39;12 min&#39; &#39;273 min&#39; &#39;36 min&#39; &#39;34 min&#39; &#39;77 min&#39; &#39;60 min&#39; &#39;49 min&#39;
+ &#39;58 min&#39; &#39;72 min&#39; &#39;204 min&#39; &#39;212 min&#39; &#39;25 min&#39; &#39;73 min&#39; &#39;29 min&#39; &#39;47 min&#39;
+ &#39;32 min&#39; &#39;35 min&#39; &#39;71 min&#39; &#39;149 min&#39; &#39;33 min&#39; &#39;15 min&#39; &#39;54 min&#39; &#39;224 min&#39;
+ &#39;162 min&#39; &#39;37 min&#39; &#39;75 min&#39; &#39;79 min&#39; &#39;55 min&#39; &#39;158 min&#39; &#39;164 min&#39;
+ &#39;173 min&#39; &#39;181 min&#39; &#39;185 min&#39; &#39;21 min&#39; &#39;24 min&#39; &#39;51 min&#39; &#39;151 min&#39;
+ &#39;42 min&#39; &#39;22 min&#39; &#39;134 min&#39; &#39;177 min&#39; &#39;13 Seasons&#39; &#39;52 min&#39; &#39;14 min&#39;
+ &#39;53 min&#39; &#39;8 min&#39; &#39;57 min&#39; &#39;28 min&#39; &#39;50 min&#39; &#39;9 min&#39; &#39;26 min&#39; &#39;45 min&#39;
+ &#39;171 min&#39; &#39;27 min&#39; &#39;44 min&#39; &#39;146 min&#39; &#39;20 min&#39; &#39;157 min&#39; &#39;17 min&#39;
+ &#39;203 min&#39; &#39;41 min&#39; &#39;30 min&#39; &#39;194 min&#39; &#39;15 Seasons&#39; &#39;233 min&#39; &#39;237 min&#39;
+ &#39;230 min&#39; &#39;195 min&#39; &#39;253 min&#39; &#39;152 min&#39; &#39;190 min&#39; &#39;160 min&#39; &#39;208 min&#39;
+ &#39;180 min&#39; &#39;144 min&#39; &#39;5 min&#39; &#39;174 min&#39; &#39;170 min&#39; &#39;192 min&#39; &#39;209 min&#39;
+ &#39;187 min&#39; &#39;172 min&#39; &#39;16 min&#39; &#39;186 min&#39; &#39;11 min&#39; &#39;193 min&#39; &#39;176 min&#39;
+ &#39;56 min&#39; &#39;169 min&#39; &#39;40 min&#39; &#39;10 min&#39; &#39;3 min&#39; &#39;168 min&#39; &#39;312 min&#39;
+ &#39;153 min&#39; &#39;214 min&#39; &#39;31 min&#39; &#39;163 min&#39; &#39;19 min&#39; &#39;12 Seasons&#39; &#39;179 min&#39;
+ &#39;43 min&#39; &#39;200 min&#39; &#39;196 min&#39; &#39;167 min&#39; &#39;178 min&#39; &#39;228 min&#39; &#39;18 min&#39;
+ &#39;205 min&#39; &#39;201 min&#39; &#39;191 min&#39;]
+</code></pre>
+</div>
+</div>
+<div class="cell code" id="NK2wZ8Z7fKEu">
+<div class="sourceCode" id="cb13"><pre
+class="sourceCode python"><code class="sourceCode python"></code></pre></div>
+</div>
+<div class="cell markdown" id="0zw7XJv5fNE7">
+<p>Probability/Percentage- what percentage of categories are in a
+specific rating?</p>
+</div>
+<div class="cell code" data-execution_count="14"
+data-colab="{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:345}"
+id="XIOHW_GofNpU" data-outputId="f01a4198-e3c3-4d4a-91a1-71ae2b8ea394">
+<div class="sourceCode" id="cb14"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>df.head()</span></code></pre></div>
+<div class="output execute_result" data-execution_count="14">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>show_id</th>
+      <th>type</th>
+      <th>title</th>
+      <th>director</th>
+      <th>cast</th>
+      <th>country</th>
+      <th>date_added</th>
+      <th>release_year</th>
+      <th>rating</th>
+      <th>duration</th>
+      <th>listed_in</th>
+      <th>description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>s1</td>
+      <td>Movie</td>
+      <td>Dick Johnson Is Dead</td>
+      <td>Kirsten Johnson</td>
+      <td>unknown</td>
+      <td>United States</td>
+      <td>2021-09-25</td>
+      <td>2020</td>
+      <td>PG-13</td>
+      <td>90 min</td>
+      <td>Documentaries</td>
+      <td>As her father nears the end of his life, filmm...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>s2</td>
+      <td>TV Show</td>
+      <td>Blood &amp; Water</td>
+      <td>unknown</td>
+      <td>Ama Qamata, Khosi Ngema, Gail Mabalane, Thaban...</td>
+      <td>South Africa</td>
+      <td>2021-09-24</td>
+      <td>2021</td>
+      <td>TV-MA</td>
+      <td>2 Seasons</td>
+      <td>International TV Shows, TV Dramas, TV Mysteries</td>
+      <td>After crossing paths at a party, a Cape Town t...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>s3</td>
+      <td>TV Show</td>
+      <td>Ganglands</td>
+      <td>Julien Leclercq</td>
+      <td>Sami Bouajila, Tracy Gotoas, Samuel Jouy, Nabi...</td>
+      <td>unknown</td>
+      <td>2021-09-24</td>
+      <td>2021</td>
+      <td>TV-MA</td>
+      <td>1 Season</td>
+      <td>Crime TV Shows, International TV Shows, TV Act...</td>
+      <td>To protect his family from a powerful drug lor...</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>s4</td>
+      <td>TV Show</td>
+      <td>Jailbirds New Orleans</td>
+      <td>unknown</td>
+      <td>unknown</td>
+      <td>unknown</td>
+      <td>2021-09-24</td>
+      <td>2021</td>
+      <td>TV-MA</td>
+      <td>1 Season</td>
+      <td>Docuseries, Reality TV</td>
+      <td>Feuds, flirtations and toilet talk go down amo...</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>s5</td>
+      <td>TV Show</td>
+      <td>Kota Factory</td>
+      <td>unknown</td>
+      <td>Mayur More, Jitendra Kumar, Ranjan Raj, Alam K...</td>
+      <td>India</td>
+      <td>2021-09-24</td>
+      <td>2021</td>
+      <td>TV-MA</td>
+      <td>2 Seasons</td>
+      <td>International TV Shows, Romantic TV Shows, TV ...</td>
+      <td>In a city of coaching centers known to train I...</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell code" data-execution_count="15"
+data-colab="{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:345}"
+id="E1sXKvl_fQ8_" data-outputId="81ebd8df-7655-4940-a3e0-864adc0b1884">
+<div class="sourceCode" id="cb15"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>df1<span class="op">=</span>df.copy()</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>df1.rename(columns<span class="op">=</span>{<span class="st">&quot;listed_in&quot;</span>: <span class="st">&quot;category&quot;</span>}, inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>df1[<span class="st">&#39;category&#39;</span>] <span class="op">=</span> df1[<span class="st">&#39;category&#39;</span>].<span class="bu">str</span>.split(<span class="st">&#39;,&#39;</span>)</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>df1.head()</span></code></pre></div>
+<div class="output execute_result" data-execution_count="15">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>show_id</th>
+      <th>type</th>
+      <th>title</th>
+      <th>director</th>
+      <th>cast</th>
+      <th>country</th>
+      <th>date_added</th>
+      <th>release_year</th>
+      <th>rating</th>
+      <th>duration</th>
+      <th>category</th>
+      <th>description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>s1</td>
+      <td>Movie</td>
+      <td>Dick Johnson Is Dead</td>
+      <td>Kirsten Johnson</td>
+      <td>unknown</td>
+      <td>United States</td>
+      <td>2021-09-25</td>
+      <td>2020</td>
+      <td>PG-13</td>
+      <td>90 min</td>
+      <td>[Documentaries]</td>
+      <td>As her father nears the end of his life, filmm...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>s2</td>
+      <td>TV Show</td>
+      <td>Blood &amp; Water</td>
+      <td>unknown</td>
+      <td>Ama Qamata, Khosi Ngema, Gail Mabalane, Thaban...</td>
+      <td>South Africa</td>
+      <td>2021-09-24</td>
+      <td>2021</td>
+      <td>TV-MA</td>
+      <td>2 Seasons</td>
+      <td>[International TV Shows,  TV Dramas,  TV Myste...</td>
+      <td>After crossing paths at a party, a Cape Town t...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>s3</td>
+      <td>TV Show</td>
+      <td>Ganglands</td>
+      <td>Julien Leclercq</td>
+      <td>Sami Bouajila, Tracy Gotoas, Samuel Jouy, Nabi...</td>
+      <td>unknown</td>
+      <td>2021-09-24</td>
+      <td>2021</td>
+      <td>TV-MA</td>
+      <td>1 Season</td>
+      <td>[Crime TV Shows,  International TV Shows,  TV ...</td>
+      <td>To protect his family from a powerful drug lor...</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>s4</td>
+      <td>TV Show</td>
+      <td>Jailbirds New Orleans</td>
+      <td>unknown</td>
+      <td>unknown</td>
+      <td>unknown</td>
+      <td>2021-09-24</td>
+      <td>2021</td>
+      <td>TV-MA</td>
+      <td>1 Season</td>
+      <td>[Docuseries,  Reality TV]</td>
+      <td>Feuds, flirtations and toilet talk go down amo...</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>s5</td>
+      <td>TV Show</td>
+      <td>Kota Factory</td>
+      <td>unknown</td>
+      <td>Mayur More, Jitendra Kumar, Ranjan Raj, Alam K...</td>
+      <td>India</td>
+      <td>2021-09-24</td>
+      <td>2021</td>
+      <td>TV-MA</td>
+      <td>2 Seasons</td>
+      <td>[International TV Shows,  Romantic TV Shows,  ...</td>
+      <td>In a city of coaching centers known to train I...</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell code" data-execution_count="16"
+data-colab="{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:536}"
+id="qcan7-a2fS1D" data-outputId="85d1f55b-1b4b-4c25-a630-e4cf4f445edd">
+<div class="sourceCode" id="cb16"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>df_explode <span class="op">=</span> df1.explode(<span class="st">&#39;category&#39;</span>)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>df_explode[<span class="st">&#39;category&#39;</span>]<span class="op">=</span>df_explode[<span class="st">&#39;category&#39;</span>].<span class="bu">str</span>.strip()</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>df_explode.head(<span class="dv">10</span>)</span></code></pre></div>
+<div class="output execute_result" data-execution_count="16">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>show_id</th>
+      <th>type</th>
+      <th>title</th>
+      <th>director</th>
+      <th>cast</th>
+      <th>country</th>
+      <th>date_added</th>
+      <th>release_year</th>
+      <th>rating</th>
+      <th>duration</th>
+      <th>category</th>
+      <th>description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>s1</td>
+      <td>Movie</td>
+      <td>Dick Johnson Is Dead</td>
+      <td>Kirsten Johnson</td>
+      <td>unknown</td>
+      <td>United States</td>
+      <td>2021-09-25</td>
+      <td>2020</td>
+      <td>PG-13</td>
+      <td>90 min</td>
+      <td>Documentaries</td>
+      <td>As her father nears the end of his life, filmm...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>s2</td>
+      <td>TV Show</td>
+      <td>Blood &amp; Water</td>
+      <td>unknown</td>
+      <td>Ama Qamata, Khosi Ngema, Gail Mabalane, Thaban...</td>
+      <td>South Africa</td>
+      <td>2021-09-24</td>
+      <td>2021</td>
+      <td>TV-MA</td>
+      <td>2 Seasons</td>
+      <td>International TV Shows</td>
+      <td>After crossing paths at a party, a Cape Town t...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>s2</td>
+      <td>TV Show</td>
+      <td>Blood &amp; Water</td>
+      <td>unknown</td>
+      <td>Ama Qamata, Khosi Ngema, Gail Mabalane, Thaban...</td>
+      <td>South Africa</td>
+      <td>2021-09-24</td>
+      <td>2021</td>
+      <td>TV-MA</td>
+      <td>2 Seasons</td>
+      <td>TV Dramas</td>
+      <td>After crossing paths at a party, a Cape Town t...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>s2</td>
+      <td>TV Show</td>
+      <td>Blood &amp; Water</td>
+      <td>unknown</td>
+      <td>Ama Qamata, Khosi Ngema, Gail Mabalane, Thaban...</td>
+      <td>South Africa</td>
+      <td>2021-09-24</td>
+      <td>2021</td>
+      <td>TV-MA</td>
+      <td>2 Seasons</td>
+      <td>TV Mysteries</td>
+      <td>After crossing paths at a party, a Cape Town t...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>s3</td>
+      <td>TV Show</td>
+      <td>Ganglands</td>
+      <td>Julien Leclercq</td>
+      <td>Sami Bouajila, Tracy Gotoas, Samuel Jouy, Nabi...</td>
+      <td>unknown</td>
+      <td>2021-09-24</td>
+      <td>2021</td>
+      <td>TV-MA</td>
+      <td>1 Season</td>
+      <td>Crime TV Shows</td>
+      <td>To protect his family from a powerful drug lor...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>s3</td>
+      <td>TV Show</td>
+      <td>Ganglands</td>
+      <td>Julien Leclercq</td>
+      <td>Sami Bouajila, Tracy Gotoas, Samuel Jouy, Nabi...</td>
+      <td>unknown</td>
+      <td>2021-09-24</td>
+      <td>2021</td>
+      <td>TV-MA</td>
+      <td>1 Season</td>
+      <td>International TV Shows</td>
+      <td>To protect his family from a powerful drug lor...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>s3</td>
+      <td>TV Show</td>
+      <td>Ganglands</td>
+      <td>Julien Leclercq</td>
+      <td>Sami Bouajila, Tracy Gotoas, Samuel Jouy, Nabi...</td>
+      <td>unknown</td>
+      <td>2021-09-24</td>
+      <td>2021</td>
+      <td>TV-MA</td>
+      <td>1 Season</td>
+      <td>TV Action &amp; Adventure</td>
+      <td>To protect his family from a powerful drug lor...</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>s4</td>
+      <td>TV Show</td>
+      <td>Jailbirds New Orleans</td>
+      <td>unknown</td>
+      <td>unknown</td>
+      <td>unknown</td>
+      <td>2021-09-24</td>
+      <td>2021</td>
+      <td>TV-MA</td>
+      <td>1 Season</td>
+      <td>Docuseries</td>
+      <td>Feuds, flirtations and toilet talk go down amo...</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>s4</td>
+      <td>TV Show</td>
+      <td>Jailbirds New Orleans</td>
+      <td>unknown</td>
+      <td>unknown</td>
+      <td>unknown</td>
+      <td>2021-09-24</td>
+      <td>2021</td>
+      <td>TV-MA</td>
+      <td>1 Season</td>
+      <td>Reality TV</td>
+      <td>Feuds, flirtations and toilet talk go down amo...</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>s5</td>
+      <td>TV Show</td>
+      <td>Kota Factory</td>
+      <td>unknown</td>
+      <td>Mayur More, Jitendra Kumar, Ranjan Raj, Alam K...</td>
+      <td>India</td>
+      <td>2021-09-24</td>
+      <td>2021</td>
+      <td>TV-MA</td>
+      <td>2 Seasons</td>
+      <td>International TV Shows</td>
+      <td>In a city of coaching centers known to train I...</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell code" data-execution_count="17"
+data-colab="{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}"
+id="ozut4uksgG56" data-outputId="dc3fa0ce-b7d3-44f9-e7d1-f669b4eb138a">
+<div class="sourceCode" id="cb17"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>df_explode[<span class="st">&#39;category&#39;</span>].unique()</span></code></pre></div>
+<div class="output execute_result" data-execution_count="17">
+<pre><code>array([&#39;Documentaries&#39;, &#39;International TV Shows&#39;, &#39;TV Dramas&#39;,
+       &#39;TV Mysteries&#39;, &#39;Crime TV Shows&#39;, &#39;TV Action &amp; Adventure&#39;,
+       &#39;Docuseries&#39;, &#39;Reality TV&#39;, &#39;Romantic TV Shows&#39;, &#39;TV Comedies&#39;,
+       &#39;TV Horror&#39;, &#39;Children &amp; Family Movies&#39;, &#39;Dramas&#39;,
+       &#39;Independent Movies&#39;, &#39;International Movies&#39;, &#39;British TV Shows&#39;,
+       &#39;Comedies&#39;, &#39;Spanish-Language TV Shows&#39;, &#39;Thrillers&#39;,
+       &#39;Romantic Movies&#39;, &#39;Music &amp; Musicals&#39;, &#39;Horror Movies&#39;,
+       &#39;Sci-Fi &amp; Fantasy&#39;, &#39;TV Thrillers&#39;, &quot;Kids&#39; TV&quot;,
+       &#39;Action &amp; Adventure&#39;, &#39;TV Sci-Fi &amp; Fantasy&#39;, &#39;Classic Movies&#39;,
+       &#39;Anime Features&#39;, &#39;Sports Movies&#39;, &#39;Anime Series&#39;,
+       &#39;Korean TV Shows&#39;, &#39;Science &amp; Nature TV&#39;, &#39;Teen TV Shows&#39;,
+       &#39;Cult Movies&#39;, &#39;TV Shows&#39;, &#39;Faith &amp; Spirituality&#39;, &#39;LGBTQ Movies&#39;,
+       &#39;Stand-Up Comedy&#39;, &#39;Movies&#39;, &#39;Stand-Up Comedy &amp; Talk Shows&#39;,
+       &#39;Classic &amp; Cult TV&#39;], dtype=object)</code></pre>
+</div>
+</div>
+<div class="cell code" data-execution_count="18" id="S9pSckAdgJqB">
+<div class="sourceCode" id="cb19"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>movies<span class="op">=</span>df_explode[df_explode[<span class="st">&#39;type&#39;</span>]<span class="op">==</span> <span class="st">&#39;Movie&#39;</span>]</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>shows<span class="op">=</span>df_explode[df_explode[<span class="st">&#39;type&#39;</span>]<span class="op">==</span> <span class="st">&#39;TV Show&#39;</span>]</span></code></pre></div>
+</div>
+<div class="cell code" data-execution_count="19" id="gcXc6I9kgLVZ">
+<div class="sourceCode" id="cb20"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>movies<span class="op">=</span>movies.drop_duplicates()</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>shows<span class="op">=</span>shows.drop_duplicates()</span></code></pre></div>
+</div>
+<div class="cell code" data-execution_count="20"
+data-colab="{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:362}"
+id="eAjRUKNwgglG" data-outputId="f089cb2b-4e37-4e1b-825b-d8353c83047f">
+<div class="sourceCode" id="cb21"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>movies.head(<span class="dv">5</span>)</span></code></pre></div>
+<div class="output execute_result" data-execution_count="20">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>show_id</th>
+      <th>type</th>
+      <th>title</th>
+      <th>director</th>
+      <th>cast</th>
+      <th>country</th>
+      <th>date_added</th>
+      <th>release_year</th>
+      <th>rating</th>
+      <th>duration</th>
+      <th>category</th>
+      <th>description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>s1</td>
+      <td>Movie</td>
+      <td>Dick Johnson Is Dead</td>
+      <td>Kirsten Johnson</td>
+      <td>unknown</td>
+      <td>United States</td>
+      <td>2021-09-25</td>
+      <td>2020</td>
+      <td>PG-13</td>
+      <td>90 min</td>
+      <td>Documentaries</td>
+      <td>As her father nears the end of his life, filmm...</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>s7</td>
+      <td>Movie</td>
+      <td>My Little Pony: A New Generation</td>
+      <td>Robert Cullen, José Luis Ucha</td>
+      <td>Vanessa Hudgens, Kimiko Glenn, James Marsden, ...</td>
+      <td>unknown</td>
+      <td>2021-09-24</td>
+      <td>2021</td>
+      <td>PG</td>
+      <td>91 min</td>
+      <td>Children &amp; Family Movies</td>
+      <td>Equestria's divided. But a bright-eyed hero be...</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>s8</td>
+      <td>Movie</td>
+      <td>Sankofa</td>
+      <td>Haile Gerima</td>
+      <td>Kofi Ghanaba, Oyafunmike Ogunlano, Alexandra D...</td>
+      <td>United States, Ghana, Burkina Faso, United Kin...</td>
+      <td>2021-09-24</td>
+      <td>1993</td>
+      <td>TV-MA</td>
+      <td>125 min</td>
+      <td>Dramas</td>
+      <td>On a photo shoot in Ghana, an American model s...</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>s8</td>
+      <td>Movie</td>
+      <td>Sankofa</td>
+      <td>Haile Gerima</td>
+      <td>Kofi Ghanaba, Oyafunmike Ogunlano, Alexandra D...</td>
+      <td>United States, Ghana, Burkina Faso, United Kin...</td>
+      <td>2021-09-24</td>
+      <td>1993</td>
+      <td>TV-MA</td>
+      <td>125 min</td>
+      <td>Independent Movies</td>
+      <td>On a photo shoot in Ghana, an American model s...</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>s8</td>
+      <td>Movie</td>
+      <td>Sankofa</td>
+      <td>Haile Gerima</td>
+      <td>Kofi Ghanaba, Oyafunmike Ogunlano, Alexandra D...</td>
+      <td>United States, Ghana, Burkina Faso, United Kin...</td>
+      <td>2021-09-24</td>
+      <td>1993</td>
+      <td>TV-MA</td>
+      <td>125 min</td>
+      <td>International Movies</td>
+      <td>On a photo shoot in Ghana, an American model s...</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell code" data-execution_count="21" data-cellView="form"
+data-colab="{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:452}"
+id="Thn9XE5hhL67" data-outputId="2ac02081-08ef-43d4-82e7-3883d5cff99e">
+<div class="sourceCode" id="cb22"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># @title release_year</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib <span class="im">import</span> pyplot <span class="im">as</span> plt</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>movies[<span class="st">&#39;release_year&#39;</span>].plot(kind<span class="op">=</span><span class="st">&#39;hist&#39;</span>, bins<span class="op">=</span><span class="dv">20</span>, title<span class="op">=</span><span class="st">&#39;release_year&#39;</span>)</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>plt.gca().spines[[<span class="st">&#39;top&#39;</span>, <span class="st">&#39;right&#39;</span>,]].set_visible(<span class="va">False</span>)</span></code></pre></div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/3530b818cc6297da49df2203c6f0e2998aeeb812.png" /></p>
+</div>
+</div>
+<div class="cell code" data-execution_count="22"
+data-colab="{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:293}"
+id="XvvqTWC6gM45" data-outputId="136a5834-f450-4282-8c5b-1484953d0f9f">
+<div class="sourceCode" id="cb23"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>shows.head(<span class="dv">5</span>)</span></code></pre></div>
+<div class="output execute_result" data-execution_count="22">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>show_id</th>
+      <th>type</th>
+      <th>title</th>
+      <th>director</th>
+      <th>cast</th>
+      <th>country</th>
+      <th>date_added</th>
+      <th>release_year</th>
+      <th>rating</th>
+      <th>duration</th>
+      <th>category</th>
+      <th>description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1</th>
+      <td>s2</td>
+      <td>TV Show</td>
+      <td>Blood &amp; Water</td>
+      <td>unknown</td>
+      <td>Ama Qamata, Khosi Ngema, Gail Mabalane, Thaban...</td>
+      <td>South Africa</td>
+      <td>2021-09-24</td>
+      <td>2021</td>
+      <td>TV-MA</td>
+      <td>2 Seasons</td>
+      <td>International TV Shows</td>
+      <td>After crossing paths at a party, a Cape Town t...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>s2</td>
+      <td>TV Show</td>
+      <td>Blood &amp; Water</td>
+      <td>unknown</td>
+      <td>Ama Qamata, Khosi Ngema, Gail Mabalane, Thaban...</td>
+      <td>South Africa</td>
+      <td>2021-09-24</td>
+      <td>2021</td>
+      <td>TV-MA</td>
+      <td>2 Seasons</td>
+      <td>TV Dramas</td>
+      <td>After crossing paths at a party, a Cape Town t...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>s2</td>
+      <td>TV Show</td>
+      <td>Blood &amp; Water</td>
+      <td>unknown</td>
+      <td>Ama Qamata, Khosi Ngema, Gail Mabalane, Thaban...</td>
+      <td>South Africa</td>
+      <td>2021-09-24</td>
+      <td>2021</td>
+      <td>TV-MA</td>
+      <td>2 Seasons</td>
+      <td>TV Mysteries</td>
+      <td>After crossing paths at a party, a Cape Town t...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>s3</td>
+      <td>TV Show</td>
+      <td>Ganglands</td>
+      <td>Julien Leclercq</td>
+      <td>Sami Bouajila, Tracy Gotoas, Samuel Jouy, Nabi...</td>
+      <td>unknown</td>
+      <td>2021-09-24</td>
+      <td>2021</td>
+      <td>TV-MA</td>
+      <td>1 Season</td>
+      <td>Crime TV Shows</td>
+      <td>To protect his family from a powerful drug lor...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>s3</td>
+      <td>TV Show</td>
+      <td>Ganglands</td>
+      <td>Julien Leclercq</td>
+      <td>Sami Bouajila, Tracy Gotoas, Samuel Jouy, Nabi...</td>
+      <td>unknown</td>
+      <td>2021-09-24</td>
+      <td>2021</td>
+      <td>TV-MA</td>
+      <td>1 Season</td>
+      <td>International TV Shows</td>
+      <td>To protect his family from a powerful drug lor...</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell code" data-execution_count="23" data-cellView="form"
+data-colab="{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:452}"
+id="tLPvfvK9hLMJ" data-outputId="e7e7dda8-0959-4c6a-f6ca-1d56b6131c62">
+<div class="sourceCode" id="cb24"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># @title release_year</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib <span class="im">import</span> pyplot <span class="im">as</span> plt</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>shows[<span class="st">&#39;release_year&#39;</span>].plot(kind<span class="op">=</span><span class="st">&#39;hist&#39;</span>, bins<span class="op">=</span><span class="dv">20</span>, title<span class="op">=</span><span class="st">&#39;release_year&#39;</span>)</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>plt.gca().spines[[<span class="st">&#39;top&#39;</span>, <span class="st">&#39;right&#39;</span>,]].set_visible(<span class="va">False</span>)</span></code></pre></div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/de72d52e8a986d2599a2af75d70ce8b1fc0164db.png" /></p>
+</div>
+</div>
+<div class="cell code" data-execution_count="24" id="AyQp8zyWgO4R">
+<div class="sourceCode" id="cb25"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Check if the column &#39;duration(min)&#39; exists. If it does, use it instead of &#39;duration&#39;.</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="st">&#39;duration(min)&#39;</span> <span class="kw">in</span> movies.columns:</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>    movies[<span class="st">&#39;duration(min)&#39;</span>] <span class="op">=</span> movies[<span class="st">&#39;duration(min)&#39;</span>].astype(<span class="bu">str</span>).<span class="bu">str</span>.replace(<span class="st">&#39; min&#39;</span>, <span class="st">&#39;&#39;</span>).astype(<span class="bu">int</span>)</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Otherwise, use the original column name &#39;duration&#39;.</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>    movies[<span class="st">&#39;duration&#39;</span>] <span class="op">=</span> movies[<span class="st">&#39;duration&#39;</span>].astype(<span class="bu">str</span>).<span class="bu">str</span>.replace(<span class="st">&#39; min&#39;</span>, <span class="st">&#39;&#39;</span>).astype(<span class="bu">int</span>)</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>movies.rename(columns<span class="op">=</span>{<span class="st">&#39;duration&#39;</span>: <span class="st">&#39;duration(min)&#39;</span>, <span class="st">&#39;duration(min)&#39;</span>: <span class="st">&#39;duration(min)&#39;</span>}, inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Similar logic for &#39;shows&#39; DataFrame.</span></span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="st">&#39;duration(Season)&#39;</span> <span class="kw">in</span> shows.columns:</span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Remove &#39;Seasons&#39; and &#39;Season&#39;  and any trailing &#39;s&#39; before conversion</span></span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>    shows[<span class="st">&#39;duration(Season)&#39;</span>] <span class="op">=</span> shows[<span class="st">&#39;duration(Season)&#39;</span>].astype(<span class="bu">str</span>).<span class="bu">str</span>.replace(<span class="st">&#39; Seasons?&#39;</span>, <span class="st">&#39;&#39;</span>, regex<span class="op">=</span><span class="va">True</span>).<span class="bu">str</span>.replace(<span class="st">&#39;s$&#39;</span>, <span class="st">&#39;&#39;</span>, regex<span class="op">=</span><span class="va">True</span>).astype(<span class="bu">int</span>)</span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Remove &#39;Seasons&#39; and &#39;Season&#39;  and any trailing &#39;s&#39; before conversion</span></span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a>    shows[<span class="st">&#39;duration&#39;</span>] <span class="op">=</span> shows[<span class="st">&#39;duration&#39;</span>].astype(<span class="bu">str</span>).<span class="bu">str</span>.replace(<span class="st">&#39; Seasons?&#39;</span>, <span class="st">&#39;&#39;</span>, regex<span class="op">=</span><span class="va">True</span>).<span class="bu">str</span>.replace(<span class="st">&#39;s$&#39;</span>, <span class="st">&#39;&#39;</span>, regex<span class="op">=</span><span class="va">True</span>).astype(<span class="bu">int</span>)</span>
+<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a>shows.rename(columns<span class="op">=</span>{<span class="st">&#39;duration&#39;</span>: <span class="st">&#39;duration(Season)&#39;</span>, <span class="st">&#39;duration(Season)&#39;</span>: <span class="st">&#39;duration(Season)&#39;</span>}, inplace<span class="op">=</span><span class="va">True</span>)</span></code></pre></div>
+</div>
+<div class="cell code" data-execution_count="25"
+data-colab="{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:362}"
+id="oXuJaHp9hYt8" data-outputId="2b5e3dab-f36b-4b80-b5d9-134e3e14e7c9">
+<div class="sourceCode" id="cb26"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>movies.head()</span></code></pre></div>
+<div class="output execute_result" data-execution_count="25">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>show_id</th>
+      <th>type</th>
+      <th>title</th>
+      <th>director</th>
+      <th>cast</th>
+      <th>country</th>
+      <th>date_added</th>
+      <th>release_year</th>
+      <th>rating</th>
+      <th>duration(min)</th>
+      <th>category</th>
+      <th>description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>s1</td>
+      <td>Movie</td>
+      <td>Dick Johnson Is Dead</td>
+      <td>Kirsten Johnson</td>
+      <td>unknown</td>
+      <td>United States</td>
+      <td>2021-09-25</td>
+      <td>2020</td>
+      <td>PG-13</td>
+      <td>90</td>
+      <td>Documentaries</td>
+      <td>As her father nears the end of his life, filmm...</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>s7</td>
+      <td>Movie</td>
+      <td>My Little Pony: A New Generation</td>
+      <td>Robert Cullen, José Luis Ucha</td>
+      <td>Vanessa Hudgens, Kimiko Glenn, James Marsden, ...</td>
+      <td>unknown</td>
+      <td>2021-09-24</td>
+      <td>2021</td>
+      <td>PG</td>
+      <td>91</td>
+      <td>Children &amp; Family Movies</td>
+      <td>Equestria's divided. But a bright-eyed hero be...</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>s8</td>
+      <td>Movie</td>
+      <td>Sankofa</td>
+      <td>Haile Gerima</td>
+      <td>Kofi Ghanaba, Oyafunmike Ogunlano, Alexandra D...</td>
+      <td>United States, Ghana, Burkina Faso, United Kin...</td>
+      <td>2021-09-24</td>
+      <td>1993</td>
+      <td>TV-MA</td>
+      <td>125</td>
+      <td>Dramas</td>
+      <td>On a photo shoot in Ghana, an American model s...</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>s8</td>
+      <td>Movie</td>
+      <td>Sankofa</td>
+      <td>Haile Gerima</td>
+      <td>Kofi Ghanaba, Oyafunmike Ogunlano, Alexandra D...</td>
+      <td>United States, Ghana, Burkina Faso, United Kin...</td>
+      <td>2021-09-24</td>
+      <td>1993</td>
+      <td>TV-MA</td>
+      <td>125</td>
+      <td>Independent Movies</td>
+      <td>On a photo shoot in Ghana, an American model s...</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>s8</td>
+      <td>Movie</td>
+      <td>Sankofa</td>
+      <td>Haile Gerima</td>
+      <td>Kofi Ghanaba, Oyafunmike Ogunlano, Alexandra D...</td>
+      <td>United States, Ghana, Burkina Faso, United Kin...</td>
+      <td>2021-09-24</td>
+      <td>1993</td>
+      <td>TV-MA</td>
+      <td>125</td>
+      <td>International Movies</td>
+      <td>On a photo shoot in Ghana, an American model s...</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell code" data-execution_count="26"
+data-colab="{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:293}"
+id="Mm6tU06Zhf6J" data-outputId="12f01c2b-6a5c-464b-be9f-18ea78dac45a">
+<div class="sourceCode" id="cb27"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>shows.head()</span></code></pre></div>
+<div class="output execute_result" data-execution_count="26">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>show_id</th>
+      <th>type</th>
+      <th>title</th>
+      <th>director</th>
+      <th>cast</th>
+      <th>country</th>
+      <th>date_added</th>
+      <th>release_year</th>
+      <th>rating</th>
+      <th>duration(Season)</th>
+      <th>category</th>
+      <th>description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1</th>
+      <td>s2</td>
+      <td>TV Show</td>
+      <td>Blood &amp; Water</td>
+      <td>unknown</td>
+      <td>Ama Qamata, Khosi Ngema, Gail Mabalane, Thaban...</td>
+      <td>South Africa</td>
+      <td>2021-09-24</td>
+      <td>2021</td>
+      <td>TV-MA</td>
+      <td>2</td>
+      <td>International TV Shows</td>
+      <td>After crossing paths at a party, a Cape Town t...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>s2</td>
+      <td>TV Show</td>
+      <td>Blood &amp; Water</td>
+      <td>unknown</td>
+      <td>Ama Qamata, Khosi Ngema, Gail Mabalane, Thaban...</td>
+      <td>South Africa</td>
+      <td>2021-09-24</td>
+      <td>2021</td>
+      <td>TV-MA</td>
+      <td>2</td>
+      <td>TV Dramas</td>
+      <td>After crossing paths at a party, a Cape Town t...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>s2</td>
+      <td>TV Show</td>
+      <td>Blood &amp; Water</td>
+      <td>unknown</td>
+      <td>Ama Qamata, Khosi Ngema, Gail Mabalane, Thaban...</td>
+      <td>South Africa</td>
+      <td>2021-09-24</td>
+      <td>2021</td>
+      <td>TV-MA</td>
+      <td>2</td>
+      <td>TV Mysteries</td>
+      <td>After crossing paths at a party, a Cape Town t...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>s3</td>
+      <td>TV Show</td>
+      <td>Ganglands</td>
+      <td>Julien Leclercq</td>
+      <td>Sami Bouajila, Tracy Gotoas, Samuel Jouy, Nabi...</td>
+      <td>unknown</td>
+      <td>2021-09-24</td>
+      <td>2021</td>
+      <td>TV-MA</td>
+      <td>1</td>
+      <td>Crime TV Shows</td>
+      <td>To protect his family from a powerful drug lor...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>s3</td>
+      <td>TV Show</td>
+      <td>Ganglands</td>
+      <td>Julien Leclercq</td>
+      <td>Sami Bouajila, Tracy Gotoas, Samuel Jouy, Nabi...</td>
+      <td>unknown</td>
+      <td>2021-09-24</td>
+      <td>2021</td>
+      <td>TV-MA</td>
+      <td>1</td>
+      <td>International TV Shows</td>
+      <td>To protect his family from a powerful drug lor...</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell code" data-execution_count="27"
+data-colab="{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:770}"
+id="qAa1VzCUhTcF" data-outputId="81394d02-612a-4a6c-e38b-67729b60113e">
+<div class="sourceCode" id="cb28"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>shows_grouped <span class="op">=</span> shows.groupby([<span class="st">&#39;category&#39;</span>])[<span class="st">&#39;rating&#39;</span>].value_counts().unstack(fill_value<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>shows_grouped</span></code></pre></div>
+<div class="output execute_result" data-execution_count="27">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>rating</th>
+      <th>NR</th>
+      <th>R</th>
+      <th>TV-14</th>
+      <th>TV-G</th>
+      <th>TV-MA</th>
+      <th>TV-PG</th>
+      <th>TV-Y</th>
+      <th>TV-Y7</th>
+      <th>unknown</th>
+    </tr>
+    <tr>
+      <th>category</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Anime Series</th>
+      <td>0</td>
+      <td>0</td>
+      <td>69</td>
+      <td>0</td>
+      <td>58</td>
+      <td>17</td>
+      <td>2</td>
+      <td>25</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>British TV Shows</th>
+      <td>2</td>
+      <td>0</td>
+      <td>44</td>
+      <td>16</td>
+      <td>98</td>
+      <td>51</td>
+      <td>19</td>
+      <td>5</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>Classic &amp; Cult TV</th>
+      <td>0</td>
+      <td>0</td>
+      <td>8</td>
+      <td>0</td>
+      <td>9</td>
+      <td>2</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>Crime TV Shows</th>
+      <td>1</td>
+      <td>0</td>
+      <td>104</td>
+      <td>1</td>
+      <td>346</td>
+      <td>4</td>
+      <td>0</td>
+      <td>3</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>Docuseries</th>
+      <td>1</td>
+      <td>0</td>
+      <td>89</td>
+      <td>23</td>
+      <td>177</td>
+      <td>90</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>International TV Shows</th>
+      <td>1</td>
+      <td>1</td>
+      <td>467</td>
+      <td>23</td>
+      <td>703</td>
+      <td>129</td>
+      <td>0</td>
+      <td>3</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>Kids' TV</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>39</td>
+      <td>0</td>
+      <td>39</td>
+      <td>169</td>
+      <td>185</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>Korean TV Shows</th>
+      <td>0</td>
+      <td>0</td>
+      <td>63</td>
+      <td>2</td>
+      <td>48</td>
+      <td>12</td>
+      <td>8</td>
+      <td>14</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>Reality TV</th>
+      <td>0</td>
+      <td>0</td>
+      <td>77</td>
+      <td>20</td>
+      <td>82</td>
+      <td>64</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>Romantic TV Shows</th>
+      <td>1</td>
+      <td>0</td>
+      <td>188</td>
+      <td>2</td>
+      <td>130</td>
+      <td>43</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>Science &amp; Nature TV</th>
+      <td>0</td>
+      <td>0</td>
+      <td>21</td>
+      <td>11</td>
+      <td>15</td>
+      <td>40</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>Spanish-Language TV Shows</th>
+      <td>0</td>
+      <td>0</td>
+      <td>25</td>
+      <td>1</td>
+      <td>127</td>
+      <td>11</td>
+      <td>3</td>
+      <td>1</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>Stand-Up Comedy &amp; Talk Shows</th>
+      <td>1</td>
+      <td>0</td>
+      <td>9</td>
+      <td>2</td>
+      <td>38</td>
+      <td>4</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>TV Action &amp; Adventure</th>
+      <td>0</td>
+      <td>0</td>
+      <td>41</td>
+      <td>1</td>
+      <td>88</td>
+      <td>16</td>
+      <td>0</td>
+      <td>14</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>TV Comedies</th>
+      <td>0</td>
+      <td>0</td>
+      <td>132</td>
+      <td>25</td>
+      <td>260</td>
+      <td>52</td>
+      <td>28</td>
+      <td>52</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>TV Dramas</th>
+      <td>1</td>
+      <td>1</td>
+      <td>259</td>
+      <td>9</td>
+      <td>424</td>
+      <td>45</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>TV Horror</th>
+      <td>0</td>
+      <td>0</td>
+      <td>15</td>
+      <td>0</td>
+      <td>56</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>TV Mysteries</th>
+      <td>0</td>
+      <td>0</td>
+      <td>29</td>
+      <td>1</td>
+      <td>64</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>TV Sci-Fi &amp; Fantasy</th>
+      <td>0</td>
+      <td>0</td>
+      <td>41</td>
+      <td>1</td>
+      <td>21</td>
+      <td>9</td>
+      <td>1</td>
+      <td>9</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>TV Shows</th>
+      <td>0</td>
+      <td>1</td>
+      <td>8</td>
+      <td>2</td>
+      <td>5</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>TV Thrillers</th>
+      <td>0</td>
+      <td>1</td>
+      <td>10</td>
+      <td>1</td>
+      <td>39</td>
+      <td>2</td>
+      <td>1</td>
+      <td>2</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>Teen TV Shows</th>
+      <td>0</td>
+      <td>0</td>
+      <td>31</td>
+      <td>2</td>
+      <td>20</td>
+      <td>15</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell code" data-execution_count="28"
+data-colab="{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:708}"
+id="0t-TBsEJhtlD" data-outputId="fff7d11d-3f0f-4f5e-ca8b-3dc06b661d14">
+<div class="sourceCode" id="cb29"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>movies_grouped<span class="op">=</span>movies.groupby([<span class="st">&#39;category&#39;</span>])[<span class="st">&#39;rating&#39;</span>].value_counts().unstack(fill_value<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>movies_grouped</span></code></pre></div>
+<div class="output execute_result" data-execution_count="28">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>rating</th>
+      <th>G</th>
+      <th>NC-17</th>
+      <th>NR</th>
+      <th>PG</th>
+      <th>PG-13</th>
+      <th>R</th>
+      <th>TV-14</th>
+      <th>TV-G</th>
+      <th>TV-MA</th>
+      <th>TV-PG</th>
+      <th>TV-Y</th>
+      <th>TV-Y7</th>
+      <th>TV-Y7-FV</th>
+      <th>UR</th>
+      <th>unknown</th>
+    </tr>
+    <tr>
+      <th>category</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Action &amp; Adventure</th>
+      <td>1</td>
+      <td>0</td>
+      <td>9</td>
+      <td>32</td>
+      <td>148</td>
+      <td>220</td>
+      <td>213</td>
+      <td>0</td>
+      <td>201</td>
+      <td>33</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>Anime Features</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>5</td>
+      <td>4</td>
+      <td>0</td>
+      <td>23</td>
+      <td>1</td>
+      <td>15</td>
+      <td>19</td>
+      <td>0</td>
+      <td>4</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>Children &amp; Family Movies</th>
+      <td>33</td>
+      <td>0</td>
+      <td>0</td>
+      <td>195</td>
+      <td>11</td>
+      <td>0</td>
+      <td>18</td>
+      <td>51</td>
+      <td>1</td>
+      <td>85</td>
+      <td>113</td>
+      <td>129</td>
+      <td>5</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>Classic Movies</th>
+      <td>8</td>
+      <td>0</td>
+      <td>3</td>
+      <td>17</td>
+      <td>10</td>
+      <td>32</td>
+      <td>23</td>
+      <td>1</td>
+      <td>11</td>
+      <td>11</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>Comedies</th>
+      <td>11</td>
+      <td>2</td>
+      <td>14</td>
+      <td>148</td>
+      <td>168</td>
+      <td>180</td>
+      <td>465</td>
+      <td>29</td>
+      <td>431</td>
+      <td>153</td>
+      <td>21</td>
+      <td>47</td>
+      <td>4</td>
+      <td>1</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>Cult Movies</th>
+      <td>0</td>
+      <td>0</td>
+      <td>3</td>
+      <td>4</td>
+      <td>13</td>
+      <td>37</td>
+      <td>7</td>
+      <td>0</td>
+      <td>5</td>
+      <td>2</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>Documentaries</th>
+      <td>5</td>
+      <td>0</td>
+      <td>22</td>
+      <td>20</td>
+      <td>33</td>
+      <td>27</td>
+      <td>227</td>
+      <td>47</td>
+      <td>321</td>
+      <td>167</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>Dramas</th>
+      <td>6</td>
+      <td>1</td>
+      <td>27</td>
+      <td>69</td>
+      <td>192</td>
+      <td>375</td>
+      <td>693</td>
+      <td>27</td>
+      <td>830</td>
+      <td>200</td>
+      <td>3</td>
+      <td>1</td>
+      <td>0</td>
+      <td>2</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>Faith &amp; Spirituality</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>13</td>
+      <td>9</td>
+      <td>1</td>
+      <td>18</td>
+      <td>1</td>
+      <td>3</td>
+      <td>20</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>Horror Movies</th>
+      <td>0</td>
+      <td>0</td>
+      <td>7</td>
+      <td>4</td>
+      <td>42</td>
+      <td>97</td>
+      <td>44</td>
+      <td>0</td>
+      <td>159</td>
+      <td>4</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>Independent Movies</th>
+      <td>0</td>
+      <td>2</td>
+      <td>17</td>
+      <td>6</td>
+      <td>35</td>
+      <td>193</td>
+      <td>119</td>
+      <td>3</td>
+      <td>344</td>
+      <td>35</td>
+      <td>0</td>
+      <td>2</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>International Movies</th>
+      <td>1</td>
+      <td>2</td>
+      <td>34</td>
+      <td>13</td>
+      <td>54</td>
+      <td>101</td>
+      <td>1065</td>
+      <td>54</td>
+      <td>1130</td>
+      <td>294</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>2</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>LGBTQ Movies</th>
+      <td>0</td>
+      <td>0</td>
+      <td>2</td>
+      <td>0</td>
+      <td>8</td>
+      <td>13</td>
+      <td>8</td>
+      <td>0</td>
+      <td>59</td>
+      <td>11</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>Movies</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>3</td>
+      <td>3</td>
+      <td>13</td>
+      <td>7</td>
+      <td>17</td>
+      <td>9</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>Music &amp; Musicals</th>
+      <td>6</td>
+      <td>0</td>
+      <td>1</td>
+      <td>13</td>
+      <td>17</td>
+      <td>24</td>
+      <td>112</td>
+      <td>19</td>
+      <td>117</td>
+      <td>52</td>
+      <td>5</td>
+      <td>9</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>Romantic Movies</th>
+      <td>0</td>
+      <td>0</td>
+      <td>2</td>
+      <td>23</td>
+      <td>87</td>
+      <td>54</td>
+      <td>208</td>
+      <td>17</td>
+      <td>151</td>
+      <td>72</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>2</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>Sci-Fi &amp; Fantasy</th>
+      <td>2</td>
+      <td>0</td>
+      <td>0</td>
+      <td>21</td>
+      <td>86</td>
+      <td>46</td>
+      <td>29</td>
+      <td>0</td>
+      <td>50</td>
+      <td>5</td>
+      <td>2</td>
+      <td>2</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>Sports Movies</th>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>22</td>
+      <td>26</td>
+      <td>17</td>
+      <td>39</td>
+      <td>7</td>
+      <td>73</td>
+      <td>26</td>
+      <td>3</td>
+      <td>2</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>Stand-Up Comedy</th>
+      <td>0</td>
+      <td>0</td>
+      <td>5</td>
+      <td>0</td>
+      <td>1</td>
+      <td>7</td>
+      <td>29</td>
+      <td>3</td>
+      <td>291</td>
+      <td>7</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>Thrillers</th>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>2</td>
+      <td>54</td>
+      <td>153</td>
+      <td>119</td>
+      <td>0</td>
+      <td>240</td>
+      <td>5</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell code" data-execution_count="29"
+data-colab="{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}"
+id="eJmJswl0hyq9" data-outputId="13922aa5-360b-4346-9d57-fbd528721e2d">
+<div class="sourceCode" id="cb30"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>show_prob<span class="op">=</span>(shows_grouped.div(shows_grouped.<span class="bu">sum</span>(axis<span class="op">=</span><span class="dv">1</span>), axis<span class="op">=</span><span class="dv">0</span>))<span class="op">*</span><span class="dv">100</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>movie_prob<span class="op">=</span>(movies_grouped.div(movies_grouped.<span class="bu">sum</span>(axis<span class="op">=</span><span class="dv">1</span>), axis<span class="op">=</span><span class="dv">0</span>))<span class="op">*</span><span class="dv">100</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(show_prob)</span></code></pre></div>
+<div class="output stream stdout">
+<pre><code>rating                              NR         R      TV-14       TV-G  \
+category                                                                 
+Anime Series                  0.000000  0.000000  40.116279   0.000000   
+British TV Shows              0.851064  0.000000  18.723404   6.808511   
+Classic &amp; Cult TV             0.000000  0.000000  38.095238   0.000000   
+Crime TV Shows                0.217865  0.000000  22.657952   0.217865   
+Docuseries                    0.263158  0.000000  23.421053   6.052632   
+International TV Shows        0.075301  0.075301  35.165663   1.731928   
+Kids&#39; TV                      0.000000  0.000000   0.000000   9.006928   
+Korean TV Shows               0.000000  0.000000  42.857143   1.360544   
+Reality TV                    0.000000  0.000000  31.557377   8.196721   
+Romantic TV Shows             0.274725  0.000000  51.648352   0.549451   
+Science &amp; Nature TV           0.000000  0.000000  24.137931  12.643678   
+Spanish-Language TV Shows     0.000000  0.000000  14.880952   0.595238   
+Stand-Up Comedy &amp; Talk Shows  1.851852  0.000000  16.666667   3.703704   
+TV Action &amp; Adventure         0.000000  0.000000  25.625000   0.625000   
+TV Comedies                   0.000000  0.000000  24.000000   4.545455   
+TV Dramas                     0.135318  0.135318  35.047361   1.217862   
+TV Horror                     0.000000  0.000000  20.833333   0.000000   
+TV Mysteries                  0.000000  0.000000  30.526316   1.052632   
+TV Sci-Fi &amp; Fantasy           0.000000  0.000000  50.000000   1.219512   
+TV Shows                      0.000000  6.250000  50.000000  12.500000   
+TV Thrillers                  0.000000  1.785714  17.857143   1.785714   
+Teen TV Shows                 0.000000  0.000000  45.588235   2.941176   
+
+rating                            TV-MA      TV-PG       TV-Y      TV-Y7  \
+category                                                                   
+Anime Series                  33.720930   9.883721   1.162791  14.534884   
+British TV Shows              41.702128  21.702128   8.085106   2.127660   
+Classic &amp; Cult TV             42.857143   9.523810   4.761905   4.761905   
+Crime TV Shows                75.381264   0.871460   0.000000   0.653595   
+Docuseries                    46.578947  23.684211   0.000000   0.000000   
+International TV Shows        52.936747   9.713855   0.000000   0.225904   
+Kids&#39; TV                       0.000000   9.006928  39.030023  42.725173   
+Korean TV Shows               32.653061   8.163265   5.442177   9.523810   
+Reality TV                    33.606557  26.229508   0.000000   0.409836   
+Romantic TV Shows             35.714286  11.813187   0.000000   0.000000   
+Science &amp; Nature TV           17.241379  45.977011   0.000000   0.000000   
+Spanish-Language TV Shows     75.595238   6.547619   1.785714   0.595238   
+Stand-Up Comedy &amp; Talk Shows  70.370370   7.407407   0.000000   0.000000   
+TV Action &amp; Adventure         55.000000  10.000000   0.000000   8.750000   
+TV Comedies                   47.272727   9.454545   5.090909   9.454545   
+TV Dramas                     57.374831   6.089310   0.000000   0.000000   
+TV Horror                     77.777778   1.388889   0.000000   0.000000   
+TV Mysteries                  67.368421   1.052632   0.000000   0.000000   
+TV Sci-Fi &amp; Fantasy           25.609756  10.975610   1.219512  10.975610   
+TV Shows                      31.250000   0.000000   0.000000   0.000000   
+TV Thrillers                  69.642857   3.571429   1.785714   3.571429   
+Teen TV Shows                 29.411765  22.058824   0.000000   0.000000   
+
+rating                         unknown  
+category                                
+Anime Series                  0.581395  
+British TV Shows              0.000000  
+Classic &amp; Cult TV             0.000000  
+Crime TV Shows                0.000000  
+Docuseries                    0.000000  
+International TV Shows        0.075301  
+Kids&#39; TV                      0.230947  
+Korean TV Shows               0.000000  
+Reality TV                    0.000000  
+Romantic TV Shows             0.000000  
+Science &amp; Nature TV           0.000000  
+Spanish-Language TV Shows     0.000000  
+Stand-Up Comedy &amp; Talk Shows  0.000000  
+TV Action &amp; Adventure         0.000000  
+TV Comedies                   0.181818  
+TV Dramas                     0.000000  
+TV Horror                     0.000000  
+TV Mysteries                  0.000000  
+TV Sci-Fi &amp; Fantasy           0.000000  
+TV Shows                      0.000000  
+TV Thrillers                  0.000000  
+Teen TV Shows                 0.000000  
+</code></pre>
+</div>
+</div>
+<div class="cell code" data-execution_count="30"
+data-colab="{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}"
+id="h2rkZ7jRh4Fb" data-outputId="66fab082-cfcb-401c-d35b-934cd7c1d3e5">
+<div class="sourceCode" id="cb32"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(movie_prob)</span></code></pre></div>
+<div class="output stream stdout">
+<pre><code>rating                           G     NC-17        NR         PG      PG-13  \
+category                                                                       
+Action &amp; Adventure        0.116414  0.000000  1.047730   3.725262  17.229336   
+Anime Features            0.000000  0.000000  0.000000   7.042254   5.633803   
+Children &amp; Family Movies  5.148206  0.000000  0.000000  30.421217   1.716069   
+Classic Movies            6.896552  0.000000  2.586207  14.655172   8.620690   
+Comedies                  0.657109  0.119474  0.836320   8.841099  10.035842   
+Cult Movies               0.000000  0.000000  4.225352   5.633803  18.309859   
+Documentaries             0.575374  0.000000  2.531646   2.301496   3.797468   
+Dramas                    0.247219  0.041203  1.112485   2.843016   7.911001   
+Faith &amp; Spirituality      0.000000  0.000000  0.000000  20.000000  13.846154   
+Horror Movies             0.000000  0.000000  1.960784   1.120448  11.764706   
+Independent Movies        0.000000  0.264550  2.248677   0.793651   4.629630   
+International Movies      0.036337  0.072674  1.235465   0.472384   1.962209   
+LGBTQ Movies              0.000000  0.000000  1.960784   0.000000   7.843137   
+Movies                    0.000000  0.000000  0.000000   0.000000   0.000000   
+Music &amp; Musicals          1.600000  0.000000  0.266667   3.466667   4.533333   
+Romantic Movies           0.000000  0.000000  0.324675   3.733766  14.123377   
+Sci-Fi &amp; Fantasy          0.823045  0.000000  0.000000   8.641975  35.390947   
+Sports Movies             0.000000  0.000000  1.826484  10.045662  11.872146   
+Stand-Up Comedy           0.000000  0.000000  1.457726   0.000000   0.291545   
+Thrillers                 0.000000  0.000000  0.693241   0.346620   9.358752   
+
+rating                            R      TV-14      TV-G      TV-MA  \
+category                                                              
+Action &amp; Adventure        25.611176  24.796275  0.000000  23.399302   
+Anime Features             0.000000  32.394366  1.408451  21.126761   
+Children &amp; Family Movies   0.000000   2.808112  7.956318   0.156006   
+Classic Movies            27.586207  19.827586  0.862069   9.482759   
+Comedies                  10.752688  27.777778  1.732378  25.746714   
+Cult Movies               52.112676   9.859155  0.000000   7.042254   
+Documentaries              3.107020  26.121979  5.408516  36.939010   
+Dramas                    15.451174  28.553770  1.112485  34.198599   
+Faith &amp; Spirituality       1.538462  27.692308  1.538462   4.615385   
+Horror Movies             27.170868  12.324930  0.000000  44.537815   
+Independent Movies        25.529101  15.740741  0.396825  45.502646   
+International Movies       3.670058  38.699128  1.962209  41.061047   
+LGBTQ Movies              12.745098   7.843137  0.000000  57.843137   
+Movies                     1.851852   5.555556  5.555556  24.074074   
+Music &amp; Musicals           6.400000  29.866667  5.066667  31.200000   
+Romantic Movies            8.766234  33.766234  2.759740  24.512987   
+Sci-Fi &amp; Fantasy          18.930041  11.934156  0.000000  20.576132   
+Sports Movies              7.762557  17.808219  3.196347  33.333333   
+Stand-Up Comedy            2.040816   8.454810  0.874636  84.839650   
+Thrillers                 26.516464  20.623917  0.000000  41.594454   
+
+rating                        TV-PG       TV-Y      TV-Y7  TV-Y7-FV        UR  \
+category                                                                        
+Action &amp; Adventure         3.841676   0.000000   0.000000  0.116414  0.116414   
+Anime Features            26.760563   0.000000   5.633803  0.000000  0.000000   
+Children &amp; Family Movies  13.260530  17.628705  20.124805  0.780031  0.000000   
+Classic Movies             9.482759   0.000000   0.000000  0.000000  0.000000   
+Comedies                   9.139785   1.254480   2.807646  0.238949  0.059737   
+Cult Movies                2.816901   0.000000   0.000000  0.000000  0.000000   
+Documentaries             19.217491   0.000000   0.000000  0.000000  0.000000   
+Dramas                     8.240626   0.123609   0.041203  0.000000  0.082406   
+Faith &amp; Spirituality      30.769231   0.000000   0.000000  0.000000  0.000000   
+Horror Movies              1.120448   0.000000   0.000000  0.000000  0.000000   
+Independent Movies         4.629630   0.000000   0.264550  0.000000  0.000000   
+International Movies      10.683140   0.036337   0.036337  0.000000  0.072674   
+LGBTQ Movies              10.784314   0.000000   0.980392  0.000000  0.000000   
+Movies                    12.962963  31.481481  16.666667  0.000000  0.000000   
+Music &amp; Musicals          13.866667   1.333333   2.400000  0.000000  0.000000   
+Romantic Movies           11.688312   0.000000   0.000000  0.000000  0.324675   
+Sci-Fi &amp; Fantasy           2.057613   0.823045   0.823045  0.000000  0.000000   
+Sports Movies             11.872146   1.369863   0.913242  0.000000  0.000000   
+Stand-Up Comedy            2.040816   0.000000   0.000000  0.000000  0.000000   
+Thrillers                  0.866551   0.000000   0.000000  0.000000  0.000000   
+
+rating                     unknown  
+category                            
+Action &amp; Adventure        0.000000  
+Anime Features            0.000000  
+Children &amp; Family Movies  0.000000  
+Classic Movies            0.000000  
+Comedies                  0.000000  
+Cult Movies               0.000000  
+Documentaries             0.000000  
+Dramas                    0.041203  
+Faith &amp; Spirituality      0.000000  
+Horror Movies             0.000000  
+Independent Movies        0.000000  
+International Movies      0.000000  
+LGBTQ Movies              0.000000  
+Movies                    1.851852  
+Music &amp; Musicals          0.000000  
+Romantic Movies           0.000000  
+Sci-Fi &amp; Fantasy          0.000000  
+Sports Movies             0.000000  
+Stand-Up Comedy           0.000000  
+Thrillers                 0.000000  
+</code></pre>
+</div>
+</div>
+<div class="cell code" data-execution_count="31" id="FD-DSrQYh893">
+<div class="sourceCode" id="cb34"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>movie_prob <span class="op">=</span> pd.DataFrame(movie_prob)</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>show_prob <span class="op">=</span> pd.DataFrame(show_prob)</span></code></pre></div>
+</div>
+<div class="cell code" data-execution_count="32" id="ddfY9sNXh_ps">
+<div class="sourceCode" id="cb35"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>movie_prob <span class="op">=</span> movie_prob.replace(<span class="dv">0</span>, np.nan)</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>show_prob <span class="op">=</span> show_prob.replace(<span class="dv">0</span>, np.nan)</span></code></pre></div>
+</div>
+<div class="cell markdown" id="I9AnMRjUiDOZ">
+<p><strong>Visualizations</strong></p>
+<p>Percentage of Movie Categories in a Specific Rating</p>
+<p>Netflix has a large percent of stand up comedy in Mature TV rating.
+Though this is great for adults, this might not be as benefitcial as
+movies that stay under the ratings of PG-13, as it broadens the
+viewership. I found it was interesting that Movies had more ratings
+associated with them, but this is due to the fact that movies release in
+the theater and on TV.</p>
+</div>
+<div class="cell code" data-execution_count="33"
+data-colab="{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:767}"
+id="2EZwal5iiBPB" data-outputId="46fd6b9f-51b6-4011-db15-b889336c99dc">
+<div class="sourceCode" id="cb36"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">8</span>))</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>sns.heatmap(movie_prob, vmin<span class="op">=</span><span class="dv">0</span>, vmax<span class="op">=</span><span class="dv">100</span>, annot<span class="op">=</span><span class="va">True</span>, fmt<span class="op">=</span><span class="st">&quot;.2f&quot;</span>, cmap<span class="op">=</span><span class="st">&quot;YlGnBu&quot;</span>, cbar_kws<span class="op">=</span>{<span class="st">&#39;label&#39;</span>: <span class="st">&#39;Percentage&#39;</span>})</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">&#39;Movie Category Percentage&#39;</span>)</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">&#39;Rating&#39;</span>)</span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">&#39;Category&#39;</span>)</span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/fb9346e6bfbf70171978a08cf9cba647a655353a.png" /></p>
+</div>
+</div>
+<div class="cell markdown" id="QCIMDOBFiV42">
+<p>Percentage of TV Show Categories in a Specific Rating</p>
+<p>The TV shows were quite straight forward as the shows only debut on
+one platform. I found that Netflix has a Balance between TV-14 and
+TV-Mature shows. This might be cause they are wanting to be able to give
+a broad range of audiance and attract not only their current clientel
+but the future clientel as well.</p>
+</div>
+<div class="cell code" data-execution_count="34"
+data-colab="{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:718}"
+id="BQ1azuwliPh1" data-outputId="dc6e1a5a-0e7c-445c-a31f-aa7fa1926edd">
+<div class="sourceCode" id="cb37"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">8</span>))</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>sns.heatmap(show_prob, vmin<span class="op">=</span><span class="dv">0</span>, vmax<span class="op">=</span><span class="dv">100</span>, annot<span class="op">=</span><span class="va">True</span>, fmt<span class="op">=</span><span class="st">&quot;.2f&quot;</span>, cmap<span class="op">=</span><span class="st">&quot;YlGnBu&quot;</span>, cbar_kws<span class="op">=</span>{<span class="st">&#39;label&#39;</span>: <span class="st">&#39;Percentage&#39;</span>})</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">&#39;Show Category Percentage&#39;</span>)</span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">&#39;Rating&#39;</span>)</span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">&#39;Category&#39;</span>)</span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/461eac7a100b83c6b099a85d0764d4845053a868.png" /></p>
+</div>
+</div>
+<div class="cell markdown" id="w6DtXishido0">
+<p>Average Movie Duration</p>
+<p>If Netflix decides to continue to create their own content, I suggest
+that they keep films between 100- 85 minutes. Some outliers to take note
+of in this data is that 'Stand-up comedy' and 'movies' have the shortest
+run time.</p>
+</div>
+<div class="cell code" data-execution_count="35"
+data-colab="{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:362}"
+id="ZHc5o2Zmij65" data-outputId="9e828253-26a4-4168-fd32-61fe95962db8">
+<div class="sourceCode" id="cb38"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>movies.head()</span></code></pre></div>
+<div class="output execute_result" data-execution_count="35">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>show_id</th>
+      <th>type</th>
+      <th>title</th>
+      <th>director</th>
+      <th>cast</th>
+      <th>country</th>
+      <th>date_added</th>
+      <th>release_year</th>
+      <th>rating</th>
+      <th>duration(min)</th>
+      <th>category</th>
+      <th>description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>s1</td>
+      <td>Movie</td>
+      <td>Dick Johnson Is Dead</td>
+      <td>Kirsten Johnson</td>
+      <td>unknown</td>
+      <td>United States</td>
+      <td>2021-09-25</td>
+      <td>2020</td>
+      <td>PG-13</td>
+      <td>90</td>
+      <td>Documentaries</td>
+      <td>As her father nears the end of his life, filmm...</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>s7</td>
+      <td>Movie</td>
+      <td>My Little Pony: A New Generation</td>
+      <td>Robert Cullen, José Luis Ucha</td>
+      <td>Vanessa Hudgens, Kimiko Glenn, James Marsden, ...</td>
+      <td>unknown</td>
+      <td>2021-09-24</td>
+      <td>2021</td>
+      <td>PG</td>
+      <td>91</td>
+      <td>Children &amp; Family Movies</td>
+      <td>Equestria's divided. But a bright-eyed hero be...</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>s8</td>
+      <td>Movie</td>
+      <td>Sankofa</td>
+      <td>Haile Gerima</td>
+      <td>Kofi Ghanaba, Oyafunmike Ogunlano, Alexandra D...</td>
+      <td>United States, Ghana, Burkina Faso, United Kin...</td>
+      <td>2021-09-24</td>
+      <td>1993</td>
+      <td>TV-MA</td>
+      <td>125</td>
+      <td>Dramas</td>
+      <td>On a photo shoot in Ghana, an American model s...</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>s8</td>
+      <td>Movie</td>
+      <td>Sankofa</td>
+      <td>Haile Gerima</td>
+      <td>Kofi Ghanaba, Oyafunmike Ogunlano, Alexandra D...</td>
+      <td>United States, Ghana, Burkina Faso, United Kin...</td>
+      <td>2021-09-24</td>
+      <td>1993</td>
+      <td>TV-MA</td>
+      <td>125</td>
+      <td>Independent Movies</td>
+      <td>On a photo shoot in Ghana, an American model s...</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>s8</td>
+      <td>Movie</td>
+      <td>Sankofa</td>
+      <td>Haile Gerima</td>
+      <td>Kofi Ghanaba, Oyafunmike Ogunlano, Alexandra D...</td>
+      <td>United States, Ghana, Burkina Faso, United Kin...</td>
+      <td>2021-09-24</td>
+      <td>1993</td>
+      <td>TV-MA</td>
+      <td>125</td>
+      <td>International Movies</td>
+      <td>On a photo shoot in Ghana, an American model s...</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell markdown" id="Ca7TOqR4jFQd">
+<p>Actor Popularity</p>
+<p>In the section below, I have closed off most of the coding, to focus
+on the visuals. Feel Free to open them if you want insight into how i
+made these visualisations.</p>
+</div>
+<div class="cell code" data-execution_count="36"
+data-colab="{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:362}"
+id="QXbl1umSimpt" data-outputId="495be1dd-bf05-4264-f0e0-c1251c247396">
+<div class="sourceCode" id="cb39"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>movies.head()</span></code></pre></div>
+<div class="output execute_result" data-execution_count="36">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>show_id</th>
+      <th>type</th>
+      <th>title</th>
+      <th>director</th>
+      <th>cast</th>
+      <th>country</th>
+      <th>date_added</th>
+      <th>release_year</th>
+      <th>rating</th>
+      <th>duration(min)</th>
+      <th>category</th>
+      <th>description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>s1</td>
+      <td>Movie</td>
+      <td>Dick Johnson Is Dead</td>
+      <td>Kirsten Johnson</td>
+      <td>unknown</td>
+      <td>United States</td>
+      <td>2021-09-25</td>
+      <td>2020</td>
+      <td>PG-13</td>
+      <td>90</td>
+      <td>Documentaries</td>
+      <td>As her father nears the end of his life, filmm...</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>s7</td>
+      <td>Movie</td>
+      <td>My Little Pony: A New Generation</td>
+      <td>Robert Cullen, José Luis Ucha</td>
+      <td>Vanessa Hudgens, Kimiko Glenn, James Marsden, ...</td>
+      <td>unknown</td>
+      <td>2021-09-24</td>
+      <td>2021</td>
+      <td>PG</td>
+      <td>91</td>
+      <td>Children &amp; Family Movies</td>
+      <td>Equestria's divided. But a bright-eyed hero be...</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>s8</td>
+      <td>Movie</td>
+      <td>Sankofa</td>
+      <td>Haile Gerima</td>
+      <td>Kofi Ghanaba, Oyafunmike Ogunlano, Alexandra D...</td>
+      <td>United States, Ghana, Burkina Faso, United Kin...</td>
+      <td>2021-09-24</td>
+      <td>1993</td>
+      <td>TV-MA</td>
+      <td>125</td>
+      <td>Dramas</td>
+      <td>On a photo shoot in Ghana, an American model s...</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>s8</td>
+      <td>Movie</td>
+      <td>Sankofa</td>
+      <td>Haile Gerima</td>
+      <td>Kofi Ghanaba, Oyafunmike Ogunlano, Alexandra D...</td>
+      <td>United States, Ghana, Burkina Faso, United Kin...</td>
+      <td>2021-09-24</td>
+      <td>1993</td>
+      <td>TV-MA</td>
+      <td>125</td>
+      <td>Independent Movies</td>
+      <td>On a photo shoot in Ghana, an American model s...</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>s8</td>
+      <td>Movie</td>
+      <td>Sankofa</td>
+      <td>Haile Gerima</td>
+      <td>Kofi Ghanaba, Oyafunmike Ogunlano, Alexandra D...</td>
+      <td>United States, Ghana, Burkina Faso, United Kin...</td>
+      <td>2021-09-24</td>
+      <td>1993</td>
+      <td>TV-MA</td>
+      <td>125</td>
+      <td>International Movies</td>
+      <td>On a photo shoot in Ghana, an American model s...</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell code" data-execution_count="37"
+data-colab="{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:293}"
+id="K68xIpsvjIqG" data-outputId="8c420afb-f6fb-4b55-a9b0-d515ba9e5a55">
+<div class="sourceCode" id="cb40"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>shows.head()</span></code></pre></div>
+<div class="output execute_result" data-execution_count="37">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>show_id</th>
+      <th>type</th>
+      <th>title</th>
+      <th>director</th>
+      <th>cast</th>
+      <th>country</th>
+      <th>date_added</th>
+      <th>release_year</th>
+      <th>rating</th>
+      <th>duration(Season)</th>
+      <th>category</th>
+      <th>description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1</th>
+      <td>s2</td>
+      <td>TV Show</td>
+      <td>Blood &amp; Water</td>
+      <td>unknown</td>
+      <td>Ama Qamata, Khosi Ngema, Gail Mabalane, Thaban...</td>
+      <td>South Africa</td>
+      <td>2021-09-24</td>
+      <td>2021</td>
+      <td>TV-MA</td>
+      <td>2</td>
+      <td>International TV Shows</td>
+      <td>After crossing paths at a party, a Cape Town t...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>s2</td>
+      <td>TV Show</td>
+      <td>Blood &amp; Water</td>
+      <td>unknown</td>
+      <td>Ama Qamata, Khosi Ngema, Gail Mabalane, Thaban...</td>
+      <td>South Africa</td>
+      <td>2021-09-24</td>
+      <td>2021</td>
+      <td>TV-MA</td>
+      <td>2</td>
+      <td>TV Dramas</td>
+      <td>After crossing paths at a party, a Cape Town t...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>s2</td>
+      <td>TV Show</td>
+      <td>Blood &amp; Water</td>
+      <td>unknown</td>
+      <td>Ama Qamata, Khosi Ngema, Gail Mabalane, Thaban...</td>
+      <td>South Africa</td>
+      <td>2021-09-24</td>
+      <td>2021</td>
+      <td>TV-MA</td>
+      <td>2</td>
+      <td>TV Mysteries</td>
+      <td>After crossing paths at a party, a Cape Town t...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>s3</td>
+      <td>TV Show</td>
+      <td>Ganglands</td>
+      <td>Julien Leclercq</td>
+      <td>Sami Bouajila, Tracy Gotoas, Samuel Jouy, Nabi...</td>
+      <td>unknown</td>
+      <td>2021-09-24</td>
+      <td>2021</td>
+      <td>TV-MA</td>
+      <td>1</td>
+      <td>Crime TV Shows</td>
+      <td>To protect his family from a powerful drug lor...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>s3</td>
+      <td>TV Show</td>
+      <td>Ganglands</td>
+      <td>Julien Leclercq</td>
+      <td>Sami Bouajila, Tracy Gotoas, Samuel Jouy, Nabi...</td>
+      <td>unknown</td>
+      <td>2021-09-24</td>
+      <td>2021</td>
+      <td>TV-MA</td>
+      <td>1</td>
+      <td>International TV Shows</td>
+      <td>To protect his family from a powerful drug lor...</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell code" data-execution_count="38" id="sX4_PPAEjJpl">
+<div class="sourceCode" id="cb41"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>shows[<span class="st">&#39;cast&#39;</span>] <span class="op">=</span> shows[<span class="st">&#39;cast&#39;</span>].<span class="bu">str</span>.split(<span class="st">&#39;,&#39;</span>)</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>movies[<span class="st">&#39;cast&#39;</span>] <span class="op">=</span> movies[<span class="st">&#39;cast&#39;</span>].<span class="bu">str</span>.split(<span class="st">&#39;,&#39;</span>)</span></code></pre></div>
+</div>
+<div class="cell code" data-execution_count="39" id="9gxeeJgRjL20">
+<div class="sourceCode" id="cb42"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>shows_explode_cast <span class="op">=</span> shows.explode(<span class="st">&#39;cast&#39;</span>)</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>movies_explode_cast <span class="op">=</span> movies.explode(<span class="st">&#39;cast&#39;</span>)</span></code></pre></div>
+</div>
+<div class="cell code" data-execution_count="40" id="O6Tvx50gjNVn">
+<div class="sourceCode" id="cb43"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>shows_explode_cast[<span class="st">&#39;cast&#39;</span>]<span class="op">=</span>shows_explode_cast[<span class="st">&#39;cast&#39;</span>].<span class="bu">str</span>.strip()</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>movies_explode_cast[<span class="st">&#39;cast&#39;</span>]<span class="op">=</span>movies_explode_cast[<span class="st">&#39;cast&#39;</span>].<span class="bu">str</span>.strip()</span></code></pre></div>
+</div>
+<div class="cell code" data-execution_count="41"
+data-colab="{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}"
+id="h4TQWfLgjO2F" data-outputId="63c67e89-c7b5-4b39-9c48-330b9e03217e">
+<div class="sourceCode" id="cb44"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>shows_explode_cast[<span class="st">&#39;cast&#39;</span>].unique()</span></code></pre></div>
+<div class="output execute_result" data-execution_count="41">
+<pre><code>array([&#39;Ama Qamata&#39;, &#39;Khosi Ngema&#39;, &#39;Gail Mabalane&#39;, ..., &#39;Waseem Abbas&#39;,
+       &#39;Javed Sheikh&#39;, &#39;Hina Khawaja Bayat&#39;], dtype=object)</code></pre>
+</div>
+</div>
+<div class="cell code" data-execution_count="42"
+data-colab="{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}"
+id="NHMCJrVrjQPU" data-outputId="eecc4b83-2cd2-40f0-e4d4-95ee499b11db">
+<div class="sourceCode" id="cb46"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>movies_explode_cast[<span class="st">&#39;cast&#39;</span>].unique()</span></code></pre></div>
+<div class="output execute_result" data-execution_count="42">
+<pre><code>array([&#39;unknown&#39;, &#39;Vanessa Hudgens&#39;, &#39;Kimiko Glenn&#39;, ..., &#39;Malkeet Rauni&#39;,
+       &#39;Anita Shabdish&#39;, &#39;Chittaranjan Tripathy&#39;], dtype=object)</code></pre>
+</div>
+</div>
+<div class="cell code" data-execution_count="43" id="7coJ1oSJjRzK">
+<div class="sourceCode" id="cb48"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>movies_explode_cast<span class="op">=</span>movies_explode_cast.drop_duplicates()</span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>shows_explode_cast<span class="op">=</span>shows_explode_cast.drop_duplicates()</span></code></pre></div>
+</div>
+<div class="cell code" data-execution_count="44"
+data-colab="{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:293}"
+id="Mb_FvoImjT6i" data-outputId="11ddca25-fa34-4ea4-c7b5-71fb70f34204">
+<div class="sourceCode" id="cb49"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>movies_explode_cast.head()</span></code></pre></div>
+<div class="output execute_result" data-execution_count="44">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>show_id</th>
+      <th>type</th>
+      <th>title</th>
+      <th>director</th>
+      <th>cast</th>
+      <th>country</th>
+      <th>date_added</th>
+      <th>release_year</th>
+      <th>rating</th>
+      <th>duration(min)</th>
+      <th>category</th>
+      <th>description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>s1</td>
+      <td>Movie</td>
+      <td>Dick Johnson Is Dead</td>
+      <td>Kirsten Johnson</td>
+      <td>unknown</td>
+      <td>United States</td>
+      <td>2021-09-25</td>
+      <td>2020</td>
+      <td>PG-13</td>
+      <td>90</td>
+      <td>Documentaries</td>
+      <td>As her father nears the end of his life, filmm...</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>s7</td>
+      <td>Movie</td>
+      <td>My Little Pony: A New Generation</td>
+      <td>Robert Cullen, José Luis Ucha</td>
+      <td>Vanessa Hudgens</td>
+      <td>unknown</td>
+      <td>2021-09-24</td>
+      <td>2021</td>
+      <td>PG</td>
+      <td>91</td>
+      <td>Children &amp; Family Movies</td>
+      <td>Equestria's divided. But a bright-eyed hero be...</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>s7</td>
+      <td>Movie</td>
+      <td>My Little Pony: A New Generation</td>
+      <td>Robert Cullen, José Luis Ucha</td>
+      <td>Kimiko Glenn</td>
+      <td>unknown</td>
+      <td>2021-09-24</td>
+      <td>2021</td>
+      <td>PG</td>
+      <td>91</td>
+      <td>Children &amp; Family Movies</td>
+      <td>Equestria's divided. But a bright-eyed hero be...</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>s7</td>
+      <td>Movie</td>
+      <td>My Little Pony: A New Generation</td>
+      <td>Robert Cullen, José Luis Ucha</td>
+      <td>James Marsden</td>
+      <td>unknown</td>
+      <td>2021-09-24</td>
+      <td>2021</td>
+      <td>PG</td>
+      <td>91</td>
+      <td>Children &amp; Family Movies</td>
+      <td>Equestria's divided. But a bright-eyed hero be...</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>s7</td>
+      <td>Movie</td>
+      <td>My Little Pony: A New Generation</td>
+      <td>Robert Cullen, José Luis Ucha</td>
+      <td>Sofia Carson</td>
+      <td>unknown</td>
+      <td>2021-09-24</td>
+      <td>2021</td>
+      <td>PG</td>
+      <td>91</td>
+      <td>Children &amp; Family Movies</td>
+      <td>Equestria's divided. But a bright-eyed hero be...</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell code" data-execution_count="45" id="NQQtX3UqjVYo">
+<div class="sourceCode" id="cb50"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>num_movies1 <span class="op">=</span> movies_explode_cast.groupby([<span class="st">&#39;cast&#39;</span>,<span class="st">&#39;country&#39;</span>])[<span class="st">&#39;title&#39;</span>].nunique().reset_index()</span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>num_movies1.columns <span class="op">=</span> [<span class="st">&#39;cast&#39;</span>,<span class="st">&#39;country&#39;</span>, <span class="st">&#39;Num_Movies&#39;</span>]</span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>num_movies1 <span class="op">=</span> num_movies1[num_movies1[<span class="st">&#39;cast&#39;</span>] <span class="op">!=</span> <span class="st">&#39;unknown&#39;</span>]</span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>num_movies1 <span class="op">=</span> num_movies1[num_movies1[<span class="st">&#39;Num_Movies&#39;</span>] <span class="op">&gt;</span> <span class="dv">10</span>]</span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>num_movies1 <span class="op">=</span> num_movies1.sort_values(by<span class="op">=</span><span class="st">&#39;Num_Movies&#39;</span>, ascending<span class="op">=</span><span class="va">False</span>).head(<span class="dv">20</span>)</span></code></pre></div>
+</div>
+<div class="cell code" data-execution_count="46"
+data-colab="{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:676}"
+id="i8iSTYhpjXbM" data-outputId="1b8616fe-d88b-45c8-d17f-2eff567d616d">
+<div class="sourceCode" id="cb51"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>num_movies1</span></code></pre></div>
+<div class="output execute_result" data-execution_count="46">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>cast</th>
+      <th>country</th>
+      <th>Num_Movies</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2548</th>
+      <td>Anupam Kher</td>
+      <td>India</td>
+      <td>40</td>
+    </tr>
+    <tr>
+      <th>26983</th>
+      <td>Shah Rukh Khan</td>
+      <td>India</td>
+      <td>32</td>
+    </tr>
+    <tr>
+      <th>21333</th>
+      <td>Naseeruddin Shah</td>
+      <td>India</td>
+      <td>29</td>
+    </tr>
+    <tr>
+      <th>753</th>
+      <td>Akshay Kumar</td>
+      <td>India</td>
+      <td>28</td>
+    </tr>
+    <tr>
+      <th>1588</th>
+      <td>Amitabh Bachchan</td>
+      <td>India</td>
+      <td>28</td>
+    </tr>
+    <tr>
+      <th>22732</th>
+      <td>Paresh Rawal</td>
+      <td>India</td>
+      <td>27</td>
+    </tr>
+    <tr>
+      <th>22408</th>
+      <td>Om Puri</td>
+      <td>India</td>
+      <td>26</td>
+    </tr>
+    <tr>
+      <th>15399</th>
+      <td>Kareena Kapoor</td>
+      <td>India</td>
+      <td>24</td>
+    </tr>
+    <tr>
+      <th>25627</th>
+      <td>Rupa Bhimani</td>
+      <td>unknown</td>
+      <td>23</td>
+    </tr>
+    <tr>
+      <th>15031</th>
+      <td>Julie Tejwani</td>
+      <td>unknown</td>
+      <td>23</td>
+    </tr>
+    <tr>
+      <th>4065</th>
+      <td>Boman Irani</td>
+      <td>India</td>
+      <td>23</td>
+    </tr>
+    <tr>
+      <th>26004</th>
+      <td>Salman Khan</td>
+      <td>India</td>
+      <td>20</td>
+    </tr>
+    <tr>
+      <th>692</th>
+      <td>Ajay Devgn</td>
+      <td>India</td>
+      <td>20</td>
+    </tr>
+    <tr>
+      <th>303</th>
+      <td>Adam Sandler</td>
+      <td>United States</td>
+      <td>20</td>
+    </tr>
+    <tr>
+      <th>26228</th>
+      <td>Samuel L. Jackson</td>
+      <td>United States</td>
+      <td>18</td>
+    </tr>
+    <tr>
+      <th>15731</th>
+      <td>Kay Kay Menon</td>
+      <td>India</td>
+      <td>18</td>
+    </tr>
+    <tr>
+      <th>2129</th>
+      <td>Anil Kapoor</td>
+      <td>India</td>
+      <td>17</td>
+    </tr>
+    <tr>
+      <th>21532</th>
+      <td>Nawazuddin Siddiqui</td>
+      <td>India</td>
+      <td>17</td>
+    </tr>
+    <tr>
+      <th>2988</th>
+      <td>Asrani</td>
+      <td>India</td>
+      <td>17</td>
+    </tr>
+    <tr>
+      <th>24159</th>
+      <td>Rajpal Yadav</td>
+      <td>India</td>
+      <td>17</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell code" data-execution_count="47"
+data-colab="{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:300}"
+id="ItecEpgdjY9n" data-outputId="b1b4582a-2900-481c-e504-52093e704239">
+<div class="sourceCode" id="cb52"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>num_movies1.describe()</span></code></pre></div>
+<div class="output execute_result" data-execution_count="47">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Num_Movies</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>20.000000</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>23.350000</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>6.072154</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>17.000000</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>18.000000</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>23.000000</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>27.250000</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>40.000000</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell markdown" id="ETx3EkWSjduD">
+<p>Top 20 Actors and Actresses in Movies</p>
+<p>The graph below shows the Top 20 Movie stars based on the amount of
+movies they have within the netflix data set. My inicial suggestion
+would be to pick these twenty actors and actresses to create new content
+with; this could potentially bring netflix an increase in viewer ship as
+they would see fans start flocking to the platform.</p>
+</div>
+<div class="cell code" data-execution_count="48"
+data-colab="{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:664}"
+id="9dqKauv6ja24" data-outputId="ae421528-43f5-4e76-d16b-cd95abad8040">
+<div class="sourceCode" id="cb53"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>num_movies1 <span class="op">=</span> movies_explode_cast.groupby([<span class="st">&#39;cast&#39;</span>,<span class="st">&#39;country&#39;</span>])[<span class="st">&#39;title&#39;</span>].nunique().reset_index()</span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>num_movies1.columns <span class="op">=</span> [<span class="st">&#39;cast&#39;</span>,<span class="st">&#39;country&#39;</span>, <span class="st">&#39;Num_Movies&#39;</span>]</span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>num_movies1 <span class="op">=</span> num_movies1[num_movies1[<span class="st">&#39;cast&#39;</span>] <span class="op">!=</span> <span class="st">&#39;unknown&#39;</span>]</span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>num_movies1 <span class="op">=</span> num_movies1[num_movies1[<span class="st">&#39;Num_Movies&#39;</span>] <span class="op">&gt;</span> <span class="dv">10</span>]</span>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a>num_movies1 <span class="op">=</span> num_movies1.sort_values(by<span class="op">=</span><span class="st">&#39;Num_Movies&#39;</span>, ascending<span class="op">=</span><span class="va">False</span>).head(<span class="dv">20</span>)</span>
+<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))  <span class="co"># Adjusted figure size</span></span>
+<span id="cb53-8"><a href="#cb53-8" aria-hidden="true" tabindex="-1"></a>sns.barplot(x<span class="op">=</span><span class="st">&#39;cast&#39;</span>, y<span class="op">=</span><span class="st">&#39;Num_Movies&#39;</span>, data<span class="op">=</span>num_movies1, palette<span class="op">=</span><span class="st">&#39;viridis&#39;</span>)</span>
+<span id="cb53-9"><a href="#cb53-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-10"><a href="#cb53-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, row <span class="kw">in</span> <span class="bu">enumerate</span>(num_movies1.itertuples()):</span>
+<span id="cb53-11"><a href="#cb53-11" aria-hidden="true" tabindex="-1"></a>    plt.text(i, row.Num_Movies <span class="op">+</span> <span class="fl">0.1</span>, <span class="bu">round</span>(row.Num_Movies, <span class="dv">2</span>), color<span class="op">=</span><span class="st">&#39;black&#39;</span>, ha<span class="op">=</span><span class="st">&quot;center&quot;</span>)</span>
+<span id="cb53-12"><a href="#cb53-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-13"><a href="#cb53-13" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">&#39;Movie Actors: Top 20 Popularity&#39;</span>)</span>
+<span id="cb53-14"><a href="#cb53-14" aria-hidden="true" tabindex="-1"></a>plt.xticks(rotation<span class="op">=</span><span class="dv">90</span>)</span>
+<span id="cb53-15"><a href="#cb53-15" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">&#39;Actors&#39;</span>)</span>
+<span id="cb53-16"><a href="#cb53-16" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">&#39;Total Movies&#39;</span>)</span>
+<span id="cb53-17"><a href="#cb53-17" aria-hidden="true" tabindex="-1"></a>plt.tight_layout(rect<span class="op">=</span>[<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="fl">0.95</span>])</span>
+<span id="cb53-18"><a href="#cb53-18" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div>
+<div class="output stream stderr">
+<pre><code>C:\Users\hadan\AppData\Local\Temp\ipykernel_23536\4289029480.py:8: FutureWarning: 
+
+Passing `palette` without assigning `hue` is deprecated and will be removed in v0.14.0. Assign the `x` variable to `hue` and set `legend=False` for the same effect.
+
+  sns.barplot(x=&#39;cast&#39;, y=&#39;Num_Movies&#39;, data=num_movies1, palette=&#39;viridis&#39;)
+</code></pre>
+</div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/41e3e7a867593757853204d9b8d6bc46e19b1563.png" /></p>
+</div>
+</div>
+<div class="cell markdown" id="iXZ5aFdDjlc0">
+<p>Top 20 Actors and Actresses in TV Shows</p>
+</div>
+<div class="cell code" data-execution_count="49"
+data-colab="{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:664}"
+id="59QvvLBjjfBb" data-outputId="9d40ea61-ba66-4fb0-fec2-58cbea80b834">
+<div class="sourceCode" id="cb55"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>num_shows1 <span class="op">=</span> shows_explode_cast.groupby([<span class="st">&#39;cast&#39;</span>,<span class="st">&#39;country&#39;</span>])[<span class="st">&#39;title&#39;</span>].nunique().reset_index()</span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>num_shows1.columns <span class="op">=</span> [<span class="st">&#39;cast&#39;</span>,<span class="st">&#39;country&#39;</span>, <span class="st">&#39;Num_Shows&#39;</span>]</span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>num_shows1 <span class="op">=</span> num_shows1[num_shows1[<span class="st">&#39;cast&#39;</span>] <span class="op">!=</span> <span class="st">&#39;unknown&#39;</span>]</span>
+<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a>num_shows1 <span class="op">=</span> num_shows1.sort_values(by<span class="op">=</span><span class="st">&#39;Num_Shows&#39;</span>, ascending<span class="op">=</span><span class="va">False</span>).head(<span class="dv">20</span>)</span>
+<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-6"><a href="#cb55-6" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))  <span class="co"># Adjusted figure size</span></span>
+<span id="cb55-7"><a href="#cb55-7" aria-hidden="true" tabindex="-1"></a>sns.barplot(x<span class="op">=</span><span class="st">&#39;cast&#39;</span>, y<span class="op">=</span><span class="st">&#39;Num_Shows&#39;</span>, data<span class="op">=</span>num_shows1, palette<span class="op">=</span><span class="st">&#39;viridis&#39;</span>)</span>
+<span id="cb55-8"><a href="#cb55-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-9"><a href="#cb55-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, row <span class="kw">in</span> <span class="bu">enumerate</span>(num_shows1.itertuples()):</span>
+<span id="cb55-10"><a href="#cb55-10" aria-hidden="true" tabindex="-1"></a>    plt.text(i, row.Num_Shows <span class="op">+</span> <span class="fl">0.1</span>, <span class="bu">round</span>(row.Num_Shows, <span class="dv">2</span>), color<span class="op">=</span><span class="st">&#39;black&#39;</span>, ha<span class="op">=</span><span class="st">&quot;center&quot;</span>)</span>
+<span id="cb55-11"><a href="#cb55-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-12"><a href="#cb55-12" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">&#39;TV Show Actors: Top 20 Popularity&#39;</span>)</span>
+<span id="cb55-13"><a href="#cb55-13" aria-hidden="true" tabindex="-1"></a>plt.xticks(rotation<span class="op">=</span><span class="dv">90</span>)</span>
+<span id="cb55-14"><a href="#cb55-14" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">&#39;Actors&#39;</span>)</span>
+<span id="cb55-15"><a href="#cb55-15" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">&#39;Total Shows&#39;</span>)</span>
+<span id="cb55-16"><a href="#cb55-16" aria-hidden="true" tabindex="-1"></a>plt.tight_layout(rect<span class="op">=</span>[<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="fl">0.95</span>])</span>
+<span id="cb55-17"><a href="#cb55-17" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div>
+<div class="output stream stderr">
+<pre><code>C:\Users\hadan\AppData\Local\Temp\ipykernel_23536\610655939.py:7: FutureWarning: 
+
+Passing `palette` without assigning `hue` is deprecated and will be removed in v0.14.0. Assign the `x` variable to `hue` and set `legend=False` for the same effect.
+
+  sns.barplot(x=&#39;cast&#39;, y=&#39;Num_Shows&#39;, data=num_shows1, palette=&#39;viridis&#39;)
+</code></pre>
+</div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/22a1fd8a44781d535b6eb1775392b88792cd1c49.png" /></p>
+</div>
+</div>
+<div class="cell markdown" id="S4lzDYtSjsV9">
+<p>This graph is when I began to explore Movie stars by country.</p>
+</div>
+<div class="cell code" data-execution_count="50"
+data-colab="{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:607}"
+id="iWCiAoJyjl7F" data-outputId="f7db2bb8-9d06-4248-cb55-4d358f657690">
+<div class="sourceCode" id="cb57"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>sns.barplot(data<span class="op">=</span>num_movies1, y<span class="op">=</span><span class="st">&#39;cast&#39;</span>, x<span class="op">=</span><span class="st">&#39;Num_Movies&#39;</span>, hue<span class="op">=</span><span class="st">&#39;country&#39;</span>, dodge<span class="op">=</span><span class="va">False</span>, palette<span class="op">=</span><span class="st">&#39;Paired&#39;</span>)</span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">&#39;Top 20 Actors by Number of Movies&#39;</span>)</span>
+<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">&#39;Number of Movies&#39;</span>)</span>
+<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">&#39;Actors&#39;</span>)</span>
+<span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a>plt.legend(title<span class="op">=</span><span class="st">&#39;Country&#39;</span>, bbox_to_anchor<span class="op">=</span>(<span class="fl">1.05</span>, <span class="dv">1</span>), loc<span class="op">=</span><span class="st">&#39;upper left&#39;</span>)</span>
+<span id="cb57-7"><a href="#cb57-7" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb57-8"><a href="#cb57-8" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/dcc034282828522b24b5a12bf8379196ca25c06a.png" /></p>
+</div>
+</div>
+<div class="cell markdown" id="elj1fkppj5iO">
+<p>Top 20 Actors by Number Of Shows</p>
+</div>
+<div class="cell code" data-execution_count="51"
+data-colab="{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:607}"
+id="zmiXB0j5jrxt" data-outputId="5a27d89a-45aa-431f-bc9e-5ad6baf9f6f9">
+<div class="sourceCode" id="cb58"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>sns.barplot(data<span class="op">=</span>num_shows1, y<span class="op">=</span><span class="st">&#39;cast&#39;</span>, x<span class="op">=</span><span class="st">&#39;Num_Shows&#39;</span>, hue<span class="op">=</span><span class="st">&#39;country&#39;</span>, dodge<span class="op">=</span><span class="va">False</span>, palette<span class="op">=</span><span class="st">&#39;Paired&#39;</span>)</span>
+<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">&#39;Top 20 Actors by Number of Shows&#39;</span>)</span>
+<span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">&#39;Number of Shows&#39;</span>)</span>
+<span id="cb58-5"><a href="#cb58-5" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">&#39;Actors&#39;</span>)</span>
+<span id="cb58-6"><a href="#cb58-6" aria-hidden="true" tabindex="-1"></a>plt.legend(title<span class="op">=</span><span class="st">&#39;Country&#39;</span>, bbox_to_anchor<span class="op">=</span>(<span class="fl">1.05</span>, <span class="dv">1</span>), loc<span class="op">=</span><span class="st">&#39;upper left&#39;</span>)</span>
+<span id="cb58-7"><a href="#cb58-7" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb58-8"><a href="#cb58-8" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/ccdc1ccc0548836a8eee3b79ae509218c7ad74fd.png" /></p>
+</div>
+</div>
+<div class="cell markdown" id="7vOkuoEfj7mg">
+<p>Top 3 Movie Stars per Country</p>
+</div>
+<div class="cell code" data-execution_count="50"
+data-colab="{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:1000}"
+id="dkeTKVosjy0N" data-outputId="b2824d29-5ebc-4961-9157-a6f9a70e1fba">
+<div class="sourceCode" id="cb59"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>num_movies1 <span class="op">=</span> movies_explode_cast.groupby([<span class="st">&#39;cast&#39;</span>, <span class="st">&#39;country&#39;</span>])[<span class="st">&#39;title&#39;</span>].nunique().reset_index()</span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>num_movies1.columns <span class="op">=</span> [<span class="st">&#39;cast&#39;</span>, <span class="st">&#39;country&#39;</span>, <span class="st">&#39;Num_Movies&#39;</span>]</span>
+<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a>num_movies1 <span class="op">=</span> num_movies1[num_movies1[<span class="st">&#39;cast&#39;</span>] <span class="op">!=</span> <span class="st">&#39;unknown&#39;</span>]</span>
+<span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a>num_movies1 <span class="op">=</span> num_movies1[num_movies1[<span class="st">&#39;country&#39;</span>] <span class="op">!=</span> <span class="st">&#39;unknown&#39;</span>]</span>
+<span id="cb59-5"><a href="#cb59-5" aria-hidden="true" tabindex="-1"></a>num_movies1 <span class="op">=</span> num_movies1[num_movies1[<span class="st">&#39;Num_Movies&#39;</span>] <span class="op">&gt;</span> <span class="dv">5</span>]</span>
+<span id="cb59-6"><a href="#cb59-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-7"><a href="#cb59-7" aria-hidden="true" tabindex="-1"></a>countries <span class="op">=</span> num_movies1[<span class="st">&#39;country&#39;</span>].unique()</span>
+<span id="cb59-8"><a href="#cb59-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-9"><a href="#cb59-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> country <span class="kw">in</span> countries:</span>
+<span id="cb59-10"><a href="#cb59-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-11"><a href="#cb59-11" aria-hidden="true" tabindex="-1"></a>    country_data <span class="op">=</span> num_movies1[(num_movies1[<span class="st">&#39;country&#39;</span>] <span class="op">==</span> country) <span class="op">&amp;</span> (num_movies1[<span class="st">&#39;cast&#39;</span>] <span class="op">!=</span> <span class="st">&#39;unknown&#39;</span>)]</span>
+<span id="cb59-12"><a href="#cb59-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-13"><a href="#cb59-13" aria-hidden="true" tabindex="-1"></a>    top_casts <span class="op">=</span> country_data.sort_values(by<span class="op">=</span><span class="st">&#39;Num_Movies&#39;</span>, ascending<span class="op">=</span><span class="va">False</span>).head(<span class="dv">3</span>)</span>
+<span id="cb59-14"><a href="#cb59-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-15"><a href="#cb59-15" aria-hidden="true" tabindex="-1"></a>    plt.figure(figsize<span class="op">=</span>(<span class="dv">5</span>, <span class="dv">2</span>))</span>
+<span id="cb59-16"><a href="#cb59-16" aria-hidden="true" tabindex="-1"></a>    sns.barplot(data<span class="op">=</span>top_casts, y<span class="op">=</span><span class="st">&#39;cast&#39;</span>, x<span class="op">=</span><span class="st">&#39;Num_Movies&#39;</span>, palette<span class="op">=</span><span class="st">&#39;viridis&#39;</span>)</span>
+<span id="cb59-17"><a href="#cb59-17" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="ss">f&#39;Top 3 Actors by Number of Movies in </span><span class="sc">{</span>country<span class="sc">}</span><span class="ss">&#39;</span>)</span>
+<span id="cb59-18"><a href="#cb59-18" aria-hidden="true" tabindex="-1"></a>    plt.xlabel(<span class="st">&#39;Number of Movies&#39;</span>)</span>
+<span id="cb59-19"><a href="#cb59-19" aria-hidden="true" tabindex="-1"></a>    plt.ylabel(<span class="st">&#39;Actors&#39;</span>)</span>
+<span id="cb59-20"><a href="#cb59-20" aria-hidden="true" tabindex="-1"></a>    plt.tight_layout()</span>
+<span id="cb59-21"><a href="#cb59-21" aria-hidden="true" tabindex="-1"></a>    plt.show()</span></code></pre></div>
+<div class="output stream stderr">
+<pre><code>&lt;ipython-input-50-a9aa00c8f12a&gt;:16: FutureWarning: 
+
+Passing `palette` without assigning `hue` is deprecated and will be removed in v0.14.0. Assign the `y` variable to `hue` and set `legend=False` for the same effect.
+
+  sns.barplot(data=top_casts, y=&#39;cast&#39;, x=&#39;Num_Movies&#39;, palette=&#39;viridis&#39;)
+</code></pre>
+</div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/8320717e184e992caf951ac31f88f7ccd55a8168.png" /></p>
+</div>
+<div class="output stream stderr">
+<pre><code>&lt;ipython-input-50-a9aa00c8f12a&gt;:16: FutureWarning: 
+
+Passing `palette` without assigning `hue` is deprecated and will be removed in v0.14.0. Assign the `y` variable to `hue` and set `legend=False` for the same effect.
+
+  sns.barplot(data=top_casts, y=&#39;cast&#39;, x=&#39;Num_Movies&#39;, palette=&#39;viridis&#39;)
+</code></pre>
+</div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/755b308727e33e2c544af4f8df853fd01e28e576.png" /></p>
+</div>
+<div class="output stream stderr">
+<pre><code>&lt;ipython-input-50-a9aa00c8f12a&gt;:16: FutureWarning: 
+
+Passing `palette` without assigning `hue` is deprecated and will be removed in v0.14.0. Assign the `y` variable to `hue` and set `legend=False` for the same effect.
+
+  sns.barplot(data=top_casts, y=&#39;cast&#39;, x=&#39;Num_Movies&#39;, palette=&#39;viridis&#39;)
+</code></pre>
+</div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/345bf0ff60532cd84ea332361a853296a7093cc0.png" /></p>
+</div>
+<div class="output stream stderr">
+<pre><code>&lt;ipython-input-50-a9aa00c8f12a&gt;:16: FutureWarning: 
+
+Passing `palette` without assigning `hue` is deprecated and will be removed in v0.14.0. Assign the `y` variable to `hue` and set `legend=False` for the same effect.
+
+  sns.barplot(data=top_casts, y=&#39;cast&#39;, x=&#39;Num_Movies&#39;, palette=&#39;viridis&#39;)
+</code></pre>
+</div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/443caf7e501ba5606f6a609f192a9ce65c5080bc.png" /></p>
+</div>
+<div class="output stream stderr">
+<pre><code>&lt;ipython-input-50-a9aa00c8f12a&gt;:16: FutureWarning: 
+
+Passing `palette` without assigning `hue` is deprecated and will be removed in v0.14.0. Assign the `y` variable to `hue` and set `legend=False` for the same effect.
+
+  sns.barplot(data=top_casts, y=&#39;cast&#39;, x=&#39;Num_Movies&#39;, palette=&#39;viridis&#39;)
+</code></pre>
+</div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/47c3936f25f87548bb5dc446272190b7bddb322b.png" /></p>
+</div>
+<div class="output stream stderr">
+<pre><code>&lt;ipython-input-50-a9aa00c8f12a&gt;:16: FutureWarning: 
+
+Passing `palette` without assigning `hue` is deprecated and will be removed in v0.14.0. Assign the `y` variable to `hue` and set `legend=False` for the same effect.
+
+  sns.barplot(data=top_casts, y=&#39;cast&#39;, x=&#39;Num_Movies&#39;, palette=&#39;viridis&#39;)
+</code></pre>
+</div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/6f146b622dfd1f7d022ed2c9ea27151edb823969.png" /></p>
+</div>
+<div class="output stream stderr">
+<pre><code>&lt;ipython-input-50-a9aa00c8f12a&gt;:16: FutureWarning: 
+
+Passing `palette` without assigning `hue` is deprecated and will be removed in v0.14.0. Assign the `y` variable to `hue` and set `legend=False` for the same effect.
+
+  sns.barplot(data=top_casts, y=&#39;cast&#39;, x=&#39;Num_Movies&#39;, palette=&#39;viridis&#39;)
+</code></pre>
+</div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/db76b691abd54153f7c85cebe9c3040f3abc9012.png" /></p>
+</div>
+<div class="output stream stderr">
+<pre><code>&lt;ipython-input-50-a9aa00c8f12a&gt;:16: FutureWarning: 
+
+Passing `palette` without assigning `hue` is deprecated and will be removed in v0.14.0. Assign the `y` variable to `hue` and set `legend=False` for the same effect.
+
+  sns.barplot(data=top_casts, y=&#39;cast&#39;, x=&#39;Num_Movies&#39;, palette=&#39;viridis&#39;)
+</code></pre>
+</div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/4fca2291a934297ad4ac854a48daf61d52d90131.png" /></p>
+</div>
+<div class="output stream stderr">
+<pre><code>&lt;ipython-input-50-a9aa00c8f12a&gt;:16: FutureWarning: 
+
+Passing `palette` without assigning `hue` is deprecated and will be removed in v0.14.0. Assign the `y` variable to `hue` and set `legend=False` for the same effect.
+
+  sns.barplot(data=top_casts, y=&#39;cast&#39;, x=&#39;Num_Movies&#39;, palette=&#39;viridis&#39;)
+</code></pre>
+</div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/9ee3ff3b9f3e810468f94d72e8b55f7c2f09ec98.png" /></p>
+</div>
+<div class="output stream stderr">
+<pre><code>&lt;ipython-input-50-a9aa00c8f12a&gt;:16: FutureWarning: 
+
+Passing `palette` without assigning `hue` is deprecated and will be removed in v0.14.0. Assign the `y` variable to `hue` and set `legend=False` for the same effect.
+
+  sns.barplot(data=top_casts, y=&#39;cast&#39;, x=&#39;Num_Movies&#39;, palette=&#39;viridis&#39;)
+</code></pre>
+</div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/0c294a43f186a7b1d33af191e251d9ad42141b05.png" /></p>
+</div>
+<div class="output stream stderr">
+<pre><code>&lt;ipython-input-50-a9aa00c8f12a&gt;:16: FutureWarning: 
+
+Passing `palette` without assigning `hue` is deprecated and will be removed in v0.14.0. Assign the `y` variable to `hue` and set `legend=False` for the same effect.
+
+  sns.barplot(data=top_casts, y=&#39;cast&#39;, x=&#39;Num_Movies&#39;, palette=&#39;viridis&#39;)
+</code></pre>
+</div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/9a2e7a3eab168a8920da677fb1429659a13e5b25.png" /></p>
+</div>
+<div class="output stream stderr">
+<pre><code>&lt;ipython-input-50-a9aa00c8f12a&gt;:16: FutureWarning: 
+
+Passing `palette` without assigning `hue` is deprecated and will be removed in v0.14.0. Assign the `y` variable to `hue` and set `legend=False` for the same effect.
+
+  sns.barplot(data=top_casts, y=&#39;cast&#39;, x=&#39;Num_Movies&#39;, palette=&#39;viridis&#39;)
+</code></pre>
+</div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/5e3440cb5dc8a27d0f2bd3d123ee0b6cfa0fe591.png" /></p>
+</div>
+<div class="output stream stderr">
+<pre><code>&lt;ipython-input-50-a9aa00c8f12a&gt;:16: FutureWarning: 
+
+Passing `palette` without assigning `hue` is deprecated and will be removed in v0.14.0. Assign the `y` variable to `hue` and set `legend=False` for the same effect.
+
+  sns.barplot(data=top_casts, y=&#39;cast&#39;, x=&#39;Num_Movies&#39;, palette=&#39;viridis&#39;)
+</code></pre>
+</div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/3dd34c733faa5df3f174f2b7301efe1ce2527bbc.png" /></p>
+</div>
+<div class="output stream stderr">
+<pre><code>&lt;ipython-input-50-a9aa00c8f12a&gt;:16: FutureWarning: 
+
+Passing `palette` without assigning `hue` is deprecated and will be removed in v0.14.0. Assign the `y` variable to `hue` and set `legend=False` for the same effect.
+
+  sns.barplot(data=top_casts, y=&#39;cast&#39;, x=&#39;Num_Movies&#39;, palette=&#39;viridis&#39;)
+</code></pre>
+</div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/6799e0cfaf4ddec3463d952462afe1fcf5c56b42.png" /></p>
+</div>
+</div>
+<div class="cell markdown" id="NzKlhs8_kDDT">
+<p>Top 3 Movie Stars and the Genre of film they are popular within.</p>
+<p>If Netflix wants to continue creating original content, and they pick
+the most popular stars, they would want to see what genre of films they
+predominantly reside.</p>
+<p>From here you can assume that in India they love to see Aamie Khan in
+dramas while in the USA they expect Adam Sandler to be in Comedies.</p>
+</div>
+<div class="cell code" data-execution_count="51"
+data-colab="{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:1000}"
+id="ZL322fUuj1Lu" data-outputId="c2fbc90b-c244-41f0-8ec3-238ed9a04dc6">
+<div class="sourceCode" id="cb74"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a>rating_movies1 <span class="op">=</span> movies_explode_cast.groupby([<span class="st">&#39;cast&#39;</span>, <span class="st">&#39;country&#39;</span>, <span class="st">&#39;category&#39;</span>])[<span class="st">&#39;title&#39;</span>].nunique().reset_index()</span>
+<span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a>rating_movies1.columns <span class="op">=</span> [<span class="st">&#39;cast&#39;</span>, <span class="st">&#39;country&#39;</span>, <span class="st">&#39;category&#39;</span>, <span class="st">&#39;Num_movies&#39;</span>]</span>
+<span id="cb74-3"><a href="#cb74-3" aria-hidden="true" tabindex="-1"></a>rating_movies1 <span class="op">=</span> rating_movies1.groupby([<span class="st">&#39;cast&#39;</span>, <span class="st">&#39;country&#39;</span>, <span class="st">&#39;category&#39;</span>])[<span class="st">&#39;Num_movies&#39;</span>].<span class="bu">sum</span>().reset_index()</span>
+<span id="cb74-4"><a href="#cb74-4" aria-hidden="true" tabindex="-1"></a>rating_movies1 <span class="op">=</span> rating_movies1[rating_movies1[<span class="st">&#39;cast&#39;</span>] <span class="op">!=</span> <span class="st">&#39;unknown&#39;</span>]</span>
+<span id="cb74-5"><a href="#cb74-5" aria-hidden="true" tabindex="-1"></a>rating_movies1 <span class="op">=</span> rating_movies1[rating_movies1[<span class="st">&#39;country&#39;</span>] <span class="op">!=</span> <span class="st">&#39;unknown&#39;</span>]</span>
+<span id="cb74-6"><a href="#cb74-6" aria-hidden="true" tabindex="-1"></a>rating_movies1 <span class="op">=</span> rating_movies1[rating_movies1[<span class="st">&#39;Num_movies&#39;</span>] <span class="op">&gt;</span> <span class="dv">3</span>]</span>
+<span id="cb74-7"><a href="#cb74-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb74-8"><a href="#cb74-8" aria-hidden="true" tabindex="-1"></a>countries <span class="op">=</span> rating_movies1[<span class="st">&#39;country&#39;</span>].unique()</span>
+<span id="cb74-9"><a href="#cb74-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb74-10"><a href="#cb74-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> country <span class="kw">in</span> countries:</span>
+<span id="cb74-11"><a href="#cb74-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb74-12"><a href="#cb74-12" aria-hidden="true" tabindex="-1"></a>    country_data <span class="op">=</span> rating_movies1[rating_movies1[<span class="st">&#39;country&#39;</span>] <span class="op">==</span> country].head(<span class="dv">3</span>)</span>
+<span id="cb74-13"><a href="#cb74-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb74-14"><a href="#cb74-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb74-15"><a href="#cb74-15" aria-hidden="true" tabindex="-1"></a>    rating_pivot <span class="op">=</span> country_data.pivot_table(index<span class="op">=</span><span class="st">&#39;cast&#39;</span>, columns<span class="op">=</span><span class="st">&#39;category&#39;</span>, values<span class="op">=</span><span class="st">&#39;Num_movies&#39;</span>, fill_value<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb74-16"><a href="#cb74-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb74-17"><a href="#cb74-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb74-18"><a href="#cb74-18" aria-hidden="true" tabindex="-1"></a>    ax <span class="op">=</span> rating_pivot.plot(kind<span class="op">=</span><span class="st">&#39;barh&#39;</span>, stacked<span class="op">=</span><span class="va">True</span>, figsize<span class="op">=</span>((<span class="dv">6</span>, <span class="dv">2</span>)), colormap<span class="op">=</span><span class="st">&#39;Set2&#39;</span>)</span>
+<span id="cb74-19"><a href="#cb74-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb74-20"><a href="#cb74-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb74-21"><a href="#cb74-21" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="ss">f&#39;Number of Movies by Actors and Category in </span><span class="sc">{</span>country<span class="sc">}</span><span class="ss">&#39;</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</span>
+<span id="cb74-22"><a href="#cb74-22" aria-hidden="true" tabindex="-1"></a>    plt.xlabel(<span class="st">&#39;Number of Movies&#39;</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb74-23"><a href="#cb74-23" aria-hidden="true" tabindex="-1"></a>    plt.ylabel(<span class="st">&#39;Actors&#39;</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb74-24"><a href="#cb74-24" aria-hidden="true" tabindex="-1"></a>    plt.xticks(rotation<span class="op">=</span><span class="dv">45</span>, ha<span class="op">=</span><span class="st">&#39;right&#39;</span>)</span>
+<span id="cb74-25"><a href="#cb74-25" aria-hidden="true" tabindex="-1"></a>    plt.legend(title<span class="op">=</span><span class="st">&#39;Category&#39;</span>, bbox_to_anchor<span class="op">=</span>(<span class="fl">1.05</span>, <span class="dv">1</span>), loc<span class="op">=</span><span class="st">&#39;upper left&#39;</span>)</span>
+<span id="cb74-26"><a href="#cb74-26" aria-hidden="true" tabindex="-1"></a>    plt.tight_layout()</span>
+<span id="cb74-27"><a href="#cb74-27" aria-hidden="true" tabindex="-1"></a>    plt.show()</span></code></pre></div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/1d7114e13791bd3480be1b9d869d1d19f6e65a18.png" /></p>
+</div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/8c9f8505c759d9526e7d4d93a1e34464a07ae8e3.png" /></p>
+</div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/a6a857bf3c5ca318c9e18c02b87a396c7f0fc240.png" /></p>
+</div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/38f0a762d603cf2052737165d53d0fce721193a2.png" /></p>
+</div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/33f62e179de9521b858fdc287c6fcade6c2dc627.png" /></p>
+</div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/fd675fb7c7fcfd93dd3d6feb925a573dcd2f14c9.png" /></p>
+</div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/f5fa13200f4d0e2b1b496dd39df0c2fb4f42286f.png" /></p>
+</div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/f0384c3ddd3b154621ad693c64093a97ce2a500f.png" /></p>
+</div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/4e2a98d009e381a7adab998c4948d98ee45c0903.png" /></p>
+</div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/ff1ebe470f41a942e191cc77d6538975de8cd0bf.png" /></p>
+</div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/2be5c05e726365a28ae34a65441fb0d031241376.png" /></p>
+</div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/ba6c14601d3cbb9d20d54bd77abdaf4b73318146.png" /></p>
+</div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/9b89af6154d3c622c6394c99860ad6ab681d2ad5.png" /></p>
+</div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/032b9d88be55c038f28eb8c7261d0f4e0caa7d89.png" /></p>
+</div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/8ba8de9b21b2b763258b79db855b08c9557c6b1a.png" /></p>
+</div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/25ddd3fd76744941250f934565359e883fe59d4a.png" /></p>
+</div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/46ab8ea579025754ebe7fab095065b4b52bb75df.png" /></p>
+</div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/b737a0283ce2dd975da342a942f04d94498efc51.png" /></p>
+</div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/4806c30c2008b56fc97cce100d91e02f87915060.png" /></p>
+</div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/d33d4dad4295097eb7174ab822cfc403c315c0cc.png" /></p>
+</div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/5b3f6a55bcf49511ef5662ccbb8fe9f2a71f4010.png" /></p>
+</div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/7081ee21cf212e0ce6ff76781f4f70c6f86dbeec.png" /></p>
+</div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/03facbad0509752d1ef2393725d794ab0626560f.png" /></p>
+</div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/2351502cdad96b43f9f08c989a85389849432d4c.png" /></p>
+</div>
+</div>
+<div class="cell markdown" id="9XyTg6ZykMNg">
+<p>Top 3 TV Stars per Country</p>
+<p>In this section I found that The data given for tv shows were not as
+detailed or as well populated. When removing the 'unknown' Countries it
+narrowed the search.</p>
+</div>
+<div class="cell code" data-execution_count="52"
+data-colab="{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:1000}"
+id="I9lvOy1ukI1t" data-outputId="65c327c2-f1dc-4e4f-ec4c-3482f8d5c6d1">
+<div class="sourceCode" id="cb75"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a>num_shows1 <span class="op">=</span> shows_explode_cast.groupby([<span class="st">&#39;cast&#39;</span>, <span class="st">&#39;country&#39;</span>])[<span class="st">&#39;title&#39;</span>].nunique().reset_index()</span>
+<span id="cb75-2"><a href="#cb75-2" aria-hidden="true" tabindex="-1"></a>num_shows1.columns <span class="op">=</span> [<span class="st">&#39;cast&#39;</span>, <span class="st">&#39;country&#39;</span>, <span class="st">&#39;Num_shows&#39;</span>]</span>
+<span id="cb75-3"><a href="#cb75-3" aria-hidden="true" tabindex="-1"></a>num_shows1 <span class="op">=</span> num_shows1[num_shows1[<span class="st">&#39;cast&#39;</span>] <span class="op">!=</span> <span class="st">&#39;unknown&#39;</span>]</span>
+<span id="cb75-4"><a href="#cb75-4" aria-hidden="true" tabindex="-1"></a>num_shows1 <span class="op">=</span> num_shows1[num_shows1[<span class="st">&#39;country&#39;</span>] <span class="op">!=</span> <span class="st">&#39;unknown&#39;</span>]</span>
+<span id="cb75-5"><a href="#cb75-5" aria-hidden="true" tabindex="-1"></a>num_shows1 <span class="op">=</span> num_shows1[num_shows1[<span class="st">&#39;Num_shows&#39;</span>] <span class="op">&gt;</span> <span class="dv">3</span>]</span>
+<span id="cb75-6"><a href="#cb75-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb75-7"><a href="#cb75-7" aria-hidden="true" tabindex="-1"></a>countries <span class="op">=</span> num_shows1[<span class="st">&#39;country&#39;</span>].unique()</span>
+<span id="cb75-8"><a href="#cb75-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb75-9"><a href="#cb75-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> country <span class="kw">in</span> countries:</span>
+<span id="cb75-10"><a href="#cb75-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb75-11"><a href="#cb75-11" aria-hidden="true" tabindex="-1"></a>    country_data <span class="op">=</span> num_shows1[(num_shows1[<span class="st">&#39;country&#39;</span>] <span class="op">==</span> country) <span class="op">&amp;</span> (num_shows1[<span class="st">&#39;cast&#39;</span>] <span class="op">!=</span> <span class="st">&#39;unknown&#39;</span>)]</span>
+<span id="cb75-12"><a href="#cb75-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb75-13"><a href="#cb75-13" aria-hidden="true" tabindex="-1"></a>    top_casts <span class="op">=</span> country_data.sort_values(by<span class="op">=</span><span class="st">&#39;Num_shows&#39;</span>, ascending<span class="op">=</span><span class="va">False</span>).head(<span class="dv">3</span>)</span>
+<span id="cb75-14"><a href="#cb75-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb75-15"><a href="#cb75-15" aria-hidden="true" tabindex="-1"></a>    plt.figure(figsize<span class="op">=</span>(<span class="dv">5</span>, <span class="dv">2</span>))</span>
+<span id="cb75-16"><a href="#cb75-16" aria-hidden="true" tabindex="-1"></a>    sns.barplot(data<span class="op">=</span>top_casts, y<span class="op">=</span><span class="st">&#39;cast&#39;</span>, x<span class="op">=</span><span class="st">&#39;Num_shows&#39;</span>)</span>
+<span id="cb75-17"><a href="#cb75-17" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="ss">f&#39;Top 3 Actors by Number of Shows in </span><span class="sc">{</span>country<span class="sc">}</span><span class="ss">&#39;</span>)</span>
+<span id="cb75-18"><a href="#cb75-18" aria-hidden="true" tabindex="-1"></a>    plt.xlabel(<span class="st">&#39;Number of Shows&#39;</span>)</span>
+<span id="cb75-19"><a href="#cb75-19" aria-hidden="true" tabindex="-1"></a>    plt.ylabel(<span class="st">&#39;Actors&#39;</span>)</span>
+<span id="cb75-20"><a href="#cb75-20" aria-hidden="true" tabindex="-1"></a>    plt.tight_layout()</span>
+<span id="cb75-21"><a href="#cb75-21" aria-hidden="true" tabindex="-1"></a>    plt.show()</span></code></pre></div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/68b7b8fb9a7477c7742bea6042c54e9e69d1726b.png" /></p>
+</div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/1dac0189d43f966461644bd570581944dd93b7fc.png" /></p>
+</div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/f1e38940d6b428ffec11ccde080d2d8ded1f7497.png" /></p>
+</div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/ce50bf8f1b21afa731048b4c001c221edd118ccb.png" /></p>
+</div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/cc7a88765888bd2748a552ec7e93d25ec46d66f2.png" /></p>
+</div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/c906c870d4c312b8561bf1b9df43ba4fc5cc3014.png" /></p>
+</div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/609cf54b929d37c0395f28c823aea8dffe3f2ff3.png" /></p>
+</div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/975699ec93f82e67ca8995d818d3d3f175f6bbca.png" /></p>
+</div>
+</div>
+<div class="cell code" data-execution_count="53"
+data-colab="{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:1000}"
+id="MGubnxAEkPfc" data-outputId="af64197d-3f27-4bdb-ce9a-b23fe7b32408">
+<div class="sourceCode" id="cb76"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a>rating_shows1 <span class="op">=</span> shows_explode_cast.groupby([<span class="st">&#39;cast&#39;</span>, <span class="st">&#39;country&#39;</span>, <span class="st">&#39;category&#39;</span>])[<span class="st">&#39;title&#39;</span>].nunique().reset_index()</span>
+<span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a>rating_shows1.columns <span class="op">=</span> [<span class="st">&#39;cast&#39;</span>, <span class="st">&#39;country&#39;</span>, <span class="st">&#39;category&#39;</span>, <span class="st">&#39;Num_shows&#39;</span>]</span>
+<span id="cb76-3"><a href="#cb76-3" aria-hidden="true" tabindex="-1"></a>rating_shows1 <span class="op">=</span> rating_shows1.groupby([<span class="st">&#39;cast&#39;</span>, <span class="st">&#39;country&#39;</span>, <span class="st">&#39;category&#39;</span>])[<span class="st">&#39;Num_shows&#39;</span>].<span class="bu">sum</span>().reset_index()</span>
+<span id="cb76-4"><a href="#cb76-4" aria-hidden="true" tabindex="-1"></a>rating_shows1 <span class="op">=</span> rating_shows1[rating_shows1[<span class="st">&#39;cast&#39;</span>] <span class="op">!=</span> <span class="st">&#39;unknown&#39;</span>]</span>
+<span id="cb76-5"><a href="#cb76-5" aria-hidden="true" tabindex="-1"></a>rating_shows1 <span class="op">=</span> rating_shows1[rating_shows1[<span class="st">&#39;country&#39;</span>] <span class="op">!=</span> <span class="st">&#39;unknown&#39;</span>]</span>
+<span id="cb76-6"><a href="#cb76-6" aria-hidden="true" tabindex="-1"></a>rating_shows1 <span class="op">=</span> rating_shows1[rating_shows1[<span class="st">&#39;Num_shows&#39;</span>] <span class="op">&gt;</span> <span class="dv">3</span>]</span>
+<span id="cb76-7"><a href="#cb76-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb76-8"><a href="#cb76-8" aria-hidden="true" tabindex="-1"></a>countries <span class="op">=</span> rating_shows1[<span class="st">&#39;country&#39;</span>].unique()</span>
+<span id="cb76-9"><a href="#cb76-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb76-10"><a href="#cb76-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> country <span class="kw">in</span> countries:</span>
+<span id="cb76-11"><a href="#cb76-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb76-12"><a href="#cb76-12" aria-hidden="true" tabindex="-1"></a>    country_data <span class="op">=</span> rating_shows1[rating_shows1[<span class="st">&#39;country&#39;</span>] <span class="op">==</span> country].head(<span class="dv">5</span>)</span>
+<span id="cb76-13"><a href="#cb76-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb76-14"><a href="#cb76-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb76-15"><a href="#cb76-15" aria-hidden="true" tabindex="-1"></a>    rating_pivot <span class="op">=</span> country_data.pivot_table(index<span class="op">=</span><span class="st">&#39;cast&#39;</span>, columns<span class="op">=</span><span class="st">&#39;category&#39;</span>, values<span class="op">=</span><span class="st">&#39;Num_shows&#39;</span>, fill_value<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb76-16"><a href="#cb76-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb76-17"><a href="#cb76-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb76-18"><a href="#cb76-18" aria-hidden="true" tabindex="-1"></a>    ax <span class="op">=</span> rating_pivot.plot(kind<span class="op">=</span><span class="st">&#39;barh&#39;</span>, stacked<span class="op">=</span><span class="va">True</span>, figsize<span class="op">=</span>((<span class="dv">6</span>, <span class="dv">2</span>)))</span>
+<span id="cb76-19"><a href="#cb76-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb76-20"><a href="#cb76-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb76-21"><a href="#cb76-21" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="ss">f&#39;Number of Shows by Actors and Category in </span><span class="sc">{</span>country<span class="sc">}</span><span class="ss">&#39;</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</span>
+<span id="cb76-22"><a href="#cb76-22" aria-hidden="true" tabindex="-1"></a>    plt.xlabel(<span class="st">&#39;Number of Shows&#39;</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb76-23"><a href="#cb76-23" aria-hidden="true" tabindex="-1"></a>    plt.ylabel(<span class="st">&#39;Actors&#39;</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb76-24"><a href="#cb76-24" aria-hidden="true" tabindex="-1"></a>    plt.xticks(rotation<span class="op">=</span><span class="dv">45</span>, ha<span class="op">=</span><span class="st">&#39;right&#39;</span>)</span>
+<span id="cb76-25"><a href="#cb76-25" aria-hidden="true" tabindex="-1"></a>    plt.legend(title<span class="op">=</span><span class="st">&#39;Category&#39;</span>, bbox_to_anchor<span class="op">=</span>(<span class="fl">1.05</span>, <span class="dv">1</span>), loc<span class="op">=</span><span class="st">&#39;upper left&#39;</span>)</span>
+<span id="cb76-26"><a href="#cb76-26" aria-hidden="true" tabindex="-1"></a>    plt.tight_layout()</span>
+<span id="cb76-27"><a href="#cb76-27" aria-hidden="true" tabindex="-1"></a>    plt.show()</span></code></pre></div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/57c0f4a94012b6e62ddf3024c8d02bb0581ee64c.png" /></p>
+</div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/e3cd96d0e96ba2b063ea3078ee45cc0791766c1f.png" /></p>
+</div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/da6825c0570999cf5c7a957cccd653c6c6b43a8f.png" /></p>
+</div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/537005e16f7527b9d44d2e14f29a72258ac31bb5.png" /></p>
+</div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/3683e2ea79df186584128bdcbf708ba1e638a26e.png" /></p>
+</div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/6f65252134f7399e2cf20ec8b9fcf9b0a48b79a3.png" /></p>
+</div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/dc949b34b16ea8054a5a11aecfe95edad56151cd.png" /></p>
+</div>
+</div>
+<div class="cell code" data-execution_count="53" id="EYM2zAockS9K">
+<div class="sourceCode" id="cb77"><pre
+class="sourceCode python"><code class="sourceCode python"></code></pre></div>
+</div>
+<div class="cell code" data-execution_count="54"
+data-colab="{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:1000}"
+id="mqdBfxeykW4t" data-outputId="db567a3a-ba1d-4e7c-e7e6-e2e2ed504fc9">
+<div class="sourceCode" id="cb78"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a>rating_movies1 <span class="op">=</span> movies_explode_cast.groupby([<span class="st">&#39;cast&#39;</span>, <span class="st">&#39;country&#39;</span>, <span class="st">&#39;rating&#39;</span>])[<span class="st">&#39;title&#39;</span>].nunique().reset_index()</span>
+<span id="cb78-2"><a href="#cb78-2" aria-hidden="true" tabindex="-1"></a>rating_movies1.columns <span class="op">=</span> [<span class="st">&#39;cast&#39;</span>, <span class="st">&#39;country&#39;</span>, <span class="st">&#39;rating&#39;</span>, <span class="st">&#39;Num_movies&#39;</span>]</span>
+<span id="cb78-3"><a href="#cb78-3" aria-hidden="true" tabindex="-1"></a>rating_movies1 <span class="op">=</span> rating_movies1.groupby([<span class="st">&#39;cast&#39;</span>, <span class="st">&#39;country&#39;</span>, <span class="st">&#39;rating&#39;</span>])[<span class="st">&#39;Num_movies&#39;</span>].<span class="bu">sum</span>().reset_index()</span>
+<span id="cb78-4"><a href="#cb78-4" aria-hidden="true" tabindex="-1"></a>rating_movies1 <span class="op">=</span> rating_movies1[rating_movies1[<span class="st">&#39;cast&#39;</span>] <span class="op">!=</span> <span class="st">&#39;unknown&#39;</span>]</span>
+<span id="cb78-5"><a href="#cb78-5" aria-hidden="true" tabindex="-1"></a>rating_movies1 <span class="op">=</span> rating_movies1[rating_movies1[<span class="st">&#39;country&#39;</span>] <span class="op">!=</span> <span class="st">&#39;unknown&#39;</span>]</span>
+<span id="cb78-6"><a href="#cb78-6" aria-hidden="true" tabindex="-1"></a>rating_movies1 <span class="op">=</span> rating_movies1[rating_movies1[<span class="st">&#39;Num_movies&#39;</span>] <span class="op">&gt;</span> <span class="dv">3</span>]</span>
+<span id="cb78-7"><a href="#cb78-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb78-8"><a href="#cb78-8" aria-hidden="true" tabindex="-1"></a>countries <span class="op">=</span> rating_movies1[<span class="st">&#39;country&#39;</span>].unique()</span>
+<span id="cb78-9"><a href="#cb78-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb78-10"><a href="#cb78-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> country <span class="kw">in</span> countries:</span>
+<span id="cb78-11"><a href="#cb78-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb78-12"><a href="#cb78-12" aria-hidden="true" tabindex="-1"></a>    country_data <span class="op">=</span> rating_movies1[rating_movies1[<span class="st">&#39;country&#39;</span>] <span class="op">==</span> country].head(<span class="dv">3</span>)</span>
+<span id="cb78-13"><a href="#cb78-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb78-14"><a href="#cb78-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb78-15"><a href="#cb78-15" aria-hidden="true" tabindex="-1"></a>    rating_pivot <span class="op">=</span> country_data.pivot_table(index<span class="op">=</span><span class="st">&#39;cast&#39;</span>, columns<span class="op">=</span><span class="st">&#39;rating&#39;</span>, values<span class="op">=</span><span class="st">&#39;Num_movies&#39;</span>, fill_value<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb78-16"><a href="#cb78-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb78-17"><a href="#cb78-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb78-18"><a href="#cb78-18" aria-hidden="true" tabindex="-1"></a>    ax <span class="op">=</span> rating_pivot.plot(kind<span class="op">=</span><span class="st">&#39;barh&#39;</span>, stacked<span class="op">=</span><span class="va">True</span>, figsize<span class="op">=</span>((<span class="dv">6</span>, <span class="dv">2</span>)), colormap<span class="op">=</span><span class="st">&#39;Set2&#39;</span>)</span>
+<span id="cb78-19"><a href="#cb78-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb78-20"><a href="#cb78-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb78-21"><a href="#cb78-21" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="ss">f&#39;Number of Movies by Actors and Rating in </span><span class="sc">{</span>country<span class="sc">}</span><span class="ss">&#39;</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</span>
+<span id="cb78-22"><a href="#cb78-22" aria-hidden="true" tabindex="-1"></a>    plt.xlabel(<span class="st">&#39;Number of Movies&#39;</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb78-23"><a href="#cb78-23" aria-hidden="true" tabindex="-1"></a>    plt.ylabel(<span class="st">&#39;Actors&#39;</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb78-24"><a href="#cb78-24" aria-hidden="true" tabindex="-1"></a>    plt.xticks(rotation<span class="op">=</span><span class="dv">45</span>, ha<span class="op">=</span><span class="st">&#39;right&#39;</span>)</span>
+<span id="cb78-25"><a href="#cb78-25" aria-hidden="true" tabindex="-1"></a>    plt.legend(title<span class="op">=</span><span class="st">&#39;Rating&#39;</span>, bbox_to_anchor<span class="op">=</span>(<span class="fl">1.05</span>, <span class="dv">1</span>), loc<span class="op">=</span><span class="st">&#39;upper left&#39;</span>)</span>
+<span id="cb78-26"><a href="#cb78-26" aria-hidden="true" tabindex="-1"></a>    plt.tight_layout()</span>
+<span id="cb78-27"><a href="#cb78-27" aria-hidden="true" tabindex="-1"></a>    plt.show()</span></code></pre></div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/1eab8279dc476fb972bf9e00f81a8b90f5791ece.png" /></p>
+</div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/32af1a9e59878fcf05e23057dd1362f4c00f7ac6.png" /></p>
+</div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/8ff49e946c3410c3589f82bff4d6deb8ab592731.png" /></p>
+</div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/380391c5087037e184ff4e5e963dff841a473c4a.png" /></p>
+</div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/c31681a4ec3acffc4be9a458110091e43314912c.png" /></p>
+</div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/f1861dbe8e93e81e3ca15592acff5c95512ccc96.png" /></p>
+</div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/c3b29f6866c3569e5478e3c8b436179289102b86.png" /></p>
+</div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/bbddad7ba4f9a5bc64d0b559a3a9c40927f3ffcb.png" /></p>
+</div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/e406b1e8d6fc3807c233da8e33bd6f910f7392dc.png" /></p>
+</div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/f7e81db5cba5dd492faef4c079bd026f13b9ce2c.png" /></p>
+</div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/ff711a61739974d99240ecf218b47e610b2c5587.png" /></p>
+</div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/92473eb946fa57351de33362e8588b771439eabc.png" /></p>
+</div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/16ee63edbd695566b726e87ab6bc0406b3e3ba4b.png" /></p>
+</div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/34559c70de03f12b6059d015fa4a9cbec6bc2c64.png" /></p>
+</div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/0154579d10a126406828607b383d077bc7d0a9c2.png" /></p>
+</div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/c0a3f28fa9ac8afd4fe95db206504184ef1ea530.png" /></p>
+</div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/c3780a78c085094623c7c9584ffdd92fddc6970c.png" /></p>
+</div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/a56560c7db0d17cb91231f7a2b4048cfbac78467.png" /></p>
+</div>
+</div>
+<div class="cell code" data-execution_count="55"
+data-colab="{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:1000}"
+id="bzU3-rslkaB_" data-outputId="301bc983-0bfa-4d7d-e3ac-c7e3ff015b9a">
+<div class="sourceCode" id="cb79"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a>rating_shows1 <span class="op">=</span> shows_explode_cast.groupby([<span class="st">&#39;cast&#39;</span>, <span class="st">&#39;country&#39;</span>, <span class="st">&#39;rating&#39;</span>])[<span class="st">&#39;title&#39;</span>].nunique().reset_index()</span>
+<span id="cb79-2"><a href="#cb79-2" aria-hidden="true" tabindex="-1"></a>rating_shows1.columns <span class="op">=</span> [<span class="st">&#39;cast&#39;</span>, <span class="st">&#39;country&#39;</span>, <span class="st">&#39;rating&#39;</span>, <span class="st">&#39;Num_shows&#39;</span>]</span>
+<span id="cb79-3"><a href="#cb79-3" aria-hidden="true" tabindex="-1"></a>rating_shows1 <span class="op">=</span> rating_shows1.groupby([<span class="st">&#39;cast&#39;</span>, <span class="st">&#39;country&#39;</span>, <span class="st">&#39;rating&#39;</span>])[<span class="st">&#39;Num_shows&#39;</span>].<span class="bu">sum</span>().reset_index()</span>
+<span id="cb79-4"><a href="#cb79-4" aria-hidden="true" tabindex="-1"></a>rating_shows1 <span class="op">=</span> rating_shows1[rating_shows1[<span class="st">&#39;cast&#39;</span>] <span class="op">!=</span> <span class="st">&#39;unknown&#39;</span>]</span>
+<span id="cb79-5"><a href="#cb79-5" aria-hidden="true" tabindex="-1"></a>rating_shows1 <span class="op">=</span> rating_shows1[rating_shows1[<span class="st">&#39;country&#39;</span>] <span class="op">!=</span> <span class="st">&#39;unknown&#39;</span>]</span>
+<span id="cb79-6"><a href="#cb79-6" aria-hidden="true" tabindex="-1"></a>rating_shows1 <span class="op">=</span> rating_shows1[rating_shows1[<span class="st">&#39;Num_shows&#39;</span>] <span class="op">&gt;</span> <span class="dv">3</span>]</span>
+<span id="cb79-7"><a href="#cb79-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb79-8"><a href="#cb79-8" aria-hidden="true" tabindex="-1"></a>countries <span class="op">=</span> rating_shows1[<span class="st">&#39;country&#39;</span>].unique()</span>
+<span id="cb79-9"><a href="#cb79-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb79-10"><a href="#cb79-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> country <span class="kw">in</span> countries:</span>
+<span id="cb79-11"><a href="#cb79-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb79-12"><a href="#cb79-12" aria-hidden="true" tabindex="-1"></a>    country_data <span class="op">=</span> rating_shows1[rating_shows1[<span class="st">&#39;country&#39;</span>] <span class="op">==</span> country].head(<span class="dv">3</span>)</span>
+<span id="cb79-13"><a href="#cb79-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb79-14"><a href="#cb79-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb79-15"><a href="#cb79-15" aria-hidden="true" tabindex="-1"></a>    rating_pivot <span class="op">=</span> country_data.pivot_table(index<span class="op">=</span><span class="st">&#39;cast&#39;</span>, columns<span class="op">=</span><span class="st">&#39;rating&#39;</span>, values<span class="op">=</span><span class="st">&#39;Num_shows&#39;</span>, fill_value<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb79-16"><a href="#cb79-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb79-17"><a href="#cb79-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb79-18"><a href="#cb79-18" aria-hidden="true" tabindex="-1"></a>    ax <span class="op">=</span> rating_pivot.plot(kind<span class="op">=</span><span class="st">&#39;barh&#39;</span>, stacked<span class="op">=</span><span class="va">True</span>, figsize<span class="op">=</span>((<span class="dv">6</span>, <span class="dv">2</span>)))</span>
+<span id="cb79-19"><a href="#cb79-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb79-20"><a href="#cb79-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb79-21"><a href="#cb79-21" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="ss">f&#39;Number of Shows by Actors and Rating in </span><span class="sc">{</span>country<span class="sc">}</span><span class="ss">&#39;</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</span>
+<span id="cb79-22"><a href="#cb79-22" aria-hidden="true" tabindex="-1"></a>    plt.xlabel(<span class="st">&#39;Number of Shows&#39;</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb79-23"><a href="#cb79-23" aria-hidden="true" tabindex="-1"></a>    plt.ylabel(<span class="st">&#39;Actors&#39;</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb79-24"><a href="#cb79-24" aria-hidden="true" tabindex="-1"></a>    plt.xticks(rotation<span class="op">=</span><span class="dv">45</span>, ha<span class="op">=</span><span class="st">&#39;right&#39;</span>)</span>
+<span id="cb79-25"><a href="#cb79-25" aria-hidden="true" tabindex="-1"></a>    plt.legend(title<span class="op">=</span><span class="st">&#39;Rating&#39;</span>, bbox_to_anchor<span class="op">=</span>(<span class="fl">1.05</span>, <span class="dv">1</span>), loc<span class="op">=</span><span class="st">&#39;upper left&#39;</span>)</span>
+<span id="cb79-26"><a href="#cb79-26" aria-hidden="true" tabindex="-1"></a>    plt.tight_layout()</span>
+<span id="cb79-27"><a href="#cb79-27" aria-hidden="true" tabindex="-1"></a>    plt.show()</span></code></pre></div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/9bd97d62514efd99279873efd27825ca6cff2a56.png" /></p>
+</div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/2517cc603fee178b877ff6b386fe2fe1df07586b.png" /></p>
+</div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/8ce33cd1022ce6da1f8d602dde554ff3f32a779c.png" /></p>
+</div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/9e8f699ac84def690e37c1537db10647ae55dc8f.png" /></p>
+</div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/3eb404383349ba3a9ae3c78aa0e3b3219110c876.png" /></p>
+</div>
+<div class="output display_data">
+<p><img
+src="vertopal_e83a27693c9d42f4a9422f2d04c67e76/315c201de2a54fb6e7baf19f41716b4c530c740b.png" /></p>
+</div>
+</div>
+<div class="cell code" data-execution_count="55" id="P_r2NTMmkeMP">
+<div class="sourceCode" id="cb80"><pre
+class="sourceCode python"><code class="sourceCode python"></code></pre></div>
+</div>
+<div class="cell markdown" id="9959zBG4ks4o">
+<p>Things to consider...</p>
+<p>When we group the data again, it seems like some countries disappear.
+I think it's because the countries that got filtered out didn't have a
+rating. Maybe they didn't have a rating because they didn't fit the
+system, and they were unknown. This makes me wonder if it's actually
+useful to know which celebrities mainly get certain kinds of
+ratings.</p>
+<p>Key Takeaways</p>
+<p>If the data from TV shows wants to have real value, it needs to show
+that it can target specific groups of people and customize possible TV
+content for them. Netflix has a wide range of shows and movies, but it
+mostly focuses on family-friendly content. My last suggestion is to make
+new content that features popular actors and actresses. This will
+attract their big fan bases.</p>
+</div>
+<div class="cell code" data-execution_count="55" id="GYcZ5MiRktZq">
+<div class="sourceCode" id="cb81"><pre
+class="sourceCode python"><code class="sourceCode python"></code></pre></div>
+</div>
+</body>
+</html>
